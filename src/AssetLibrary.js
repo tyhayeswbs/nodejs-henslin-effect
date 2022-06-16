@@ -2,7 +2,8 @@ const CANNON = require("cannon-es");
 const THREE = require("three");
 
 const loadingManager = new THREE.LoadingManager()
-const loader = new THREE.TextureLoader(loadingManager);
+const textureLoader = new THREE.TextureLoader(loadingManager);
+const audioLoader = new THREE.AudioLoader(loadingManager);
 
 console.log("stuff happening in AssetLibrary")
 
@@ -25,32 +26,32 @@ loadingManager.onError = (url) => {
 
 const dieMaterial = [
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/1.png"),
+    map: textureLoader.load("img/1.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }), //right side
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/2.png"),
+    map: textureLoader.load("img/2.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }), //left side
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/3.png"),
+    map: textureLoader.load("img/3.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }), //top side
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/4.png"),
+    map: textureLoader.load("img/4.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }), //bottom side
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/5.png"),
+    map: textureLoader.load("img/5.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }), //front side
   new THREE.MeshLambertMaterial({
-    map: loader.load("img/6.png"),
+    map: textureLoader.load("img/6.png"),
     //transparent: true,
     side: THREE.DoubleSide
   }) //back side
@@ -87,7 +88,21 @@ const lidMaterials = [
 ];
 
 
+var sounds = []
+const listener = new THREE.AudioListener();
+
+for (var i = 1; i <= 6; i++) {
+  let sound = new THREE.Audio(listener);
+  audioLoader.load(`sounds/dice sound ${i}.mp3`, function (buffer) {
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(1.0);
+        sounds.push(sound);
+  });
+}
+
+
 module.exports = {groundMaterial, groundMaterials, 
                   lidMaterial, lidMaterials,
-                  dieMaterial,
+                  dieMaterial, sounds
                 }

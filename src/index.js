@@ -1,13 +1,12 @@
 const CANNON = require("cannon-es");
-const WORLD = require("./World.js")
+const WORLD = require("./World.js");
 const THREE = require("three");
+const Scene = require("./Scene.js");
 const ASSETS = require("./AssetLibrary.js");
 const {DiceCup} = require("./DiceCup.js");
-
-
 const {PhysicsBox} = require("./PhysicsBox.js");
 
-
+global.sounds_attached = false;
 
 const die = new PhysicsBox(
   2,
