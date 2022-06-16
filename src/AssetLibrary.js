@@ -15,8 +15,10 @@ loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 }
 loadingManager.onLoad = () => {
     console.log("loaded all the things")
-    document.querySelector("#loading").classList.remove('show');
-    document.querySelector("#loading").classList.add('hide');
+    document.querySelector("#spinner").classList.remove('show');
+    document.querySelector("#spinner").classList.add('hide');
+    document.querySelector("#loaded").classList.remove('hide');
+    document.querySelector("#loaded").classList.add('show');
 }
 
 loadingManager.onError = (url) => {

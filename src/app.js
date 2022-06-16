@@ -1,21 +1,54 @@
-const http = require('http');
-const express = require('express');
-const path = require('path');
-const app = express();
+const CANNON = require("cannon-es");
+const WORLD = require("./World.js");
+const THREE = require("three");
+const Scene = require("./Scene.js");
+const ASSETS = require("./AssetLibrary.js");
+const {DiceCup} = require("./DiceCup.js");
+const {PhysicsBox} = require("./PhysicsBox.js");
 
-app.use(express.json());
-app.use(express.static("express"));
+const UI = require("./UI.js");
 
-// default URL for website
-app.use('/', function(req,res){
-    res.sendFile(path.join(__dirname+'/index.html'));
-    //__dirname : It will resolve to your project folder.
-  });
 
-const server = http.createServer(app);
-const port = 3000;
+global.sounds_attached = false;
 
-server.listen(port);
-console.debug('Server listening on port ' + port);
+
+let initializeDie = function(){
+
+    const die = new PhysicsBox(
+      2,
+      2,
+      2,
+      { x: 1.5, y: 1.5, z: -30 },
+      scene,
+      world,
+      updateCallbacks,
+      ASSETS.dieMaterial
+    );
+    die.body.mass = 1;
+}
+
+assetsLoadedCallbacks.push(initializeDie)
+
+
+// can see it.
+// Draw!
+requestAnimationFrame(WORLD.update);
+
+
+function reset_die(){
+  let home_position = new CANNON.Vec3({ x: 1.5, y: 1.5, z: -30 })
+  // if die escapes,  teleport it back to the centre
+  if (Math.abs(die.body.position.x) > 4.5) {
+    die.body.position = home_position
+  }
+
+  if (Math.abs(die.body.position.y) > 4.5) {
+    die.body.position = home_position
+  }
+
+  if (Math.abs(die.body.position.z) > 40) {
+    die.body.position = home_position
+  }
+}
 
 
