@@ -13,19 +13,14 @@ loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 
 }
 loadingManager.onLoad = () => {
-
     console.log("loaded all the things")
+    document.querySelector("#loading").classList.remove('show');
+    document.querySelector("#loading").classList.add('hide');
 }
 
 loadingManager.onError = (url) => {
     console.log(`an error occured loading ${url}`)
 }
-
-
-loader.load("static/img/1.png", function(){
-
-    console.log("loaded 1 when outside the thing")
-})
 
 
 const dieMaterial = [
