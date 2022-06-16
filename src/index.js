@@ -7,34 +7,35 @@ const {DiceCup} = require("./DiceCup.js");
 
 const {PhysicsBox} = require("./PhysicsBox.js");
 
-new PhysicsBox(
-  15,
-  15,
+
+
+const die = new PhysicsBox(
   2,
-  { x: 0, y: 0, z: -37 },
+  2,
+  2,
+  { x: 1.5, y: 1.5, z: -30 },
   scene,
   world,
-  WORLD.updateCallbacks,
-  ASSETS.groundMaterials
+  updateCallbacks,
+  ASSETS.dieMaterial
 );
+die.body.mass = 1;
 
 // can see it.
 // Draw!
 requestAnimationFrame(WORLD.update);
 
-/*
+
 
 function impartAcceleration() {
   die.body.wakeUp();
-  let bodies = [wallLeft, wallRight, wallTop, wallBottom, ground];
+  let bodies = [DiceCup.wallLeft, DiceCup.wallRight, DiceCup.wallTop, DiceCup.wallBottom, DiceCup.ground];
 
-  let randx = (Math.random() - 0.5) * 300;
-  let randy = (Math.random() - 0.5) * 300;
-  let randz = (Math.random() - 0.5) * 300;
+  let randx = (Math.random() - 0.5) * 100;
+  let randy = (Math.random() - 0.5) * 100;
+  let randz = (Math.random() - 0.5) * 100;
 
   for (let body of bodies) {
-    //console.log(body);
-
     let acc = new CANNON.Vec3(randx / 5, randy / 5, randz / 5);
 
     body.body.type = CANNON.Body.KINEMATIC;
@@ -45,7 +46,7 @@ function impartAcceleration() {
 }
 
 function stopShaking() {
-  let bodies = [wallLeft, wallRight, wallTop, wallBottom, ground];
+  let bodies = [DiceCup.wallLeft, DiceCup.wallRight, DiceCup.wallTop, DiceCup.wallBottom, DiceCup.ground];
   for (let body of bodies) {
     body.body.velocity = new CANNON.Vec3(0, 0, 0);
   }
@@ -62,7 +63,7 @@ document.addEventListener("stop", impartAcceleration);
 
 
 function reset_die(){
-  // if die escapes, respawn it at initial position
+  // if die escapes,  push it back to the centre
   if (Math.abs(die.body.position.x) > 4.5) {
     die.body.applyForce(
       new CANNON.Vec3({ x: -die.body.position.x, y: 0, z: 0 })
@@ -82,4 +83,4 @@ function reset_die(){
   }
 }
 
-*/
+
