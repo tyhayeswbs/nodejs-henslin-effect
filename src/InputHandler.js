@@ -1,5 +1,9 @@
+const CANNON = require("cannon-es")
+const ASSETS = require("./AssetLibrary.js")
+
 function attachTouchStart(){
   document.addEventListener("touchstart", startShaking);
+  console.log("Touch Start added")
 }
 
 function getPermission() {
@@ -15,12 +19,13 @@ function getPermission() {
         console.log(
           `Error encountered in request permission: ${e}`
         );
+        }
     } else {
       // non iOS 13+
       attachTouchStart()
     }
-  }
 }
+
 
 
 
@@ -69,19 +74,25 @@ function impartAcceleration(x, y, z, interval) {
     let duration = interval / 100; //50 is fairly good
     let acc = new CANNON.Vec3(x * duration, y * duration, z * duration);
     die.body.applyImpulse(acc);
-  }
+}
+
+function randInt(n) {
+  return Math.floor(Math.random() * n);
 }
 
 function startShaking() {
   // window.accinterval = setInterval(getAccel, 200);
   //getAccel();
   window.readings = [];
+  window.addEventListener("devicemotion", readAccel);
   document.removeEventListener("touchstart", startShaking);
   document.addEventListener("touchstart", stopShaking);
   if (!sounds_attached) {
     die.body.addEventListener("collide", function (e) {
-     if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10){
-      sounds[randInt(window.sounds.length)].play();
+     if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10)
+      {
+      ASSETS.sounds[randInt(ASSETS.sounds.length)].play();
+      }
     });
     sounds_attached = true;
   }
@@ -90,12 +101,8 @@ function startShaking() {
 function stopShaking() {
   document.removeEventListener("devicemotion", readAccel);
   document.addEventListener("touchstart", startShaking);
-  let bodies = [wallLeft, wallRight, wallTop, wallBottom, ground, lid];
-  for (let body of bodies) {
-    body.body.velocity = new CANNON.Vec3(0, 0, 0);
-  }
+  // body.body.velocity = new CANNON.Vec3(0, 0, 0);
 }
-
 
 
 assetsLoadedCallbacks.push(getPermission)

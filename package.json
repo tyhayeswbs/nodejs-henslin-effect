@@ -4,8 +4,8 @@
   "description": "Parcel implementation of dice rolling experiment",
   "scripts": {
     "start": "npm run dev",
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "dev": "parcel --public-url ./ src/index.html",
+    "build": "parcel build --public-url ./ src/index.html",
     "deploy": "now"
   },
   "dependencies": {

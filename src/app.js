@@ -7,6 +7,7 @@ const {DiceCup} = require("./DiceCup.js");
 const {PhysicsBox} = require("./PhysicsBox.js");
 
 const UI = require("./UI.js");
+const UI = require("./InputHandler.js");
 
 
 global.sounds_attached = false;
@@ -14,7 +15,7 @@ global.sounds_attached = false;
 
 let initializeDie = function(){
 
-    const die = new PhysicsBox(
+    global.die = new PhysicsBox(
       2,
       2,
       2,
