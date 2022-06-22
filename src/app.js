@@ -3,11 +3,12 @@ const WORLD = require("./World.js");
 const THREE = require("three");
 const Scene = require("./Scene.js");
 const ASSETS = require("./AssetLibrary.js");
-const {DiceCup} = require("./DiceCup.js");
+require("./DiceCup.js");
 const {PhysicsBox} = require("./PhysicsBox.js");
+const {table} = require("./Table.js");
 
 const UI = require("./UI.js");
-const UI = require("./InputHandler.js");
+const IH = require("./InputHandler.js");
 
 
 global.sounds_attached = false;

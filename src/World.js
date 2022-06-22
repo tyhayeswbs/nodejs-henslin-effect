@@ -1,6 +1,7 @@
 import * as CANNON from "cannon-es";
 import CannonDebugger from "cannon-es-debugger";
 import {scene, renderer, camera} from "./Scene.js";
+import * as ASSETS from "./AssetLibrary.js"
 
 /* 
 
@@ -9,24 +10,46 @@ CANNON BOILERPLATE
 
 */
 
-const proto_world = new CANNON.World({gravity: new CANNON.Vec3(0, 0, -9.82)});
+const proto_world = new CANNON.World({gravity: new CANNON.Vec3(0, -9.82, 0)});
 
 global.world = proto_world
 
 world.broadphase = new CANNON.NaiveBroadphase();
 world.allowSleep = true;
 
-var defaultPhysicsMaterial = new CANNON.Material("defaultMaterial");
+//var defaultPhysicsMaterial = new CANNON.Material("defaultMaterial");
 var defaultContactMaterial = new CANNON.ContactMaterial(
-  defaultPhysicsMaterial, // Material #1
-  defaultPhysicsMaterial, // Material #2
+  ASSETS.defaultPhysicsMaterial, // Material #1
+  ASSETS.defaultPhysicsMaterial, // Material #2
   {
-    friction: 0.2, // friction coefficient
-    restitution: 0.9 // restitution
+    friction: 0.1, // friction coefficient
+    restitution: 1.0 // restitution
   }
 );
 
 world.addContactMaterial(defaultContactMaterial);
+
+var dieBaiseContactMaterial = new CANNON.ContactMaterial(
+  ASSETS.defaultPhysicsMaterial, // Material #1
+  ASSETS.baisePhysicsMaterial, // Material #2
+  {
+    friction: 0.1, // friction coefficient
+    restitution: 0.8 // restitution
+  }
+);
+
+world.addContactMaterial(dieBaiseContactMaterial);
+
+var dieBackboardContactMaterial = new CANNON.ContactMaterial(
+  ASSETS.defaultPhysicsMaterial, // Material #1
+  ASSETS.backboardPhysicsMaterial, // Material #2
+  {
+    friction: 0.1, // friction coefficient
+    restitution: 0.8 // restitution
+  }
+);
+
+world.addContactMaterial(dieBaiseContactMaterial);
 
 const cannonDebugger = new CannonDebugger(scene, world, {
   // options...

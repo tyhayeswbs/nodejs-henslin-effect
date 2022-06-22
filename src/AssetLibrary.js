@@ -74,6 +74,17 @@ const groundMaterials = [
   groundMaterial
 ];
 
+const baiseMaterial = new THREE.MeshLambertMaterial({
+  color: new THREE.Color("#0da026"),
+  side: THREE.DoubleSide
+})
+
+
+const woodMaterial = new THREE.MeshLambertMaterial({
+  color: new THREE.Color("#480f0f"),
+  side: THREE.DoubleSide
+})
+
 const lidMaterial = new THREE.MeshPhysicalMaterial({
   transmission: 1,
   roughness: 0.05,
@@ -104,7 +115,18 @@ for (var i = 1; i <= 6; i++) {
 }
 
 
+const defaultPhysicsMaterial = new CANNON.Material("defaultMaterial")
+
+const baisePhysicsMaterial = new CANNON.Material("baiseMaterial")
+
+const backboardPhysicsMaterial = new CANNON.Material("backboardMaterial")
+
+
 module.exports = {groundMaterial, groundMaterials, 
                   lidMaterial, lidMaterials,
-                  dieMaterial, sounds
+                  dieMaterial, sounds,
+                  defaultPhysicsMaterial,
+                  baisePhysicsMaterial,
+                  backboardPhysicsMaterial,
+                  baiseMaterial,
                 }

@@ -2,7 +2,7 @@ const {PhysicsBox} = require( "./PhysicsBox.js")
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
 
-let DiceCup = {}
+global.DiceCup = {}
 
 DiceCup.ground = new PhysicsBox(
   15,
@@ -75,6 +75,16 @@ DiceCup.wallTop.body.type = CANNON.Body.STATIC;
 DiceCup.wallLeft.body.type = CANNON.Body.STATIC;
 DiceCup.ground.body.type = CANNON.Body.STATIC;
 DiceCup.lid.body.type = CANNON.Body.STATIC;
+
+DiceCup.destroy = function(){
+    DiceCup.wallRight.destroy()
+    DiceCup.wallBottom.destroy()
+    DiceCup.wallTop.destroy()
+    DiceCup.wallLeft.destroy()
+    DiceCup.ground.destroy()
+    DiceCup.lid.destroy()
+
+}
 
 
 

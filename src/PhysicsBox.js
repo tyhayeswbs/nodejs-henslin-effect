@@ -53,8 +53,8 @@ class PhysicsBox {
     };
 
     this.destroy = () => {
-      scene.remove(this.mesh);
-      world.remove(this.body);
+      graphicsWorld.remove(this.mesh);
+      physicsWorld.removeBody(this.body);
     };
 
     tickCallbacks.push(this.tick);

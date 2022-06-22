@@ -7,8 +7,10 @@ global.TRIAL_END_TIME = 500
 
 function attachTouchStart(){
   document.addEventListener("touchstart", startShaking);
+  //document.addEventListener("deviceorientation", leftFlatFromTable);
   console.log("Touch Start added")
 }
+
 
 function getPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -25,7 +27,7 @@ function getPermission() {
         DeviceMotionEvent.requestPermission().then((response) => {
           if (response === "granted") {
               if (need_orientation_permission){
-                DeviceMotionEvent.requestPermission().then((response) => {
+                DeviceOrientationEvent.requestPermission().then((response) => {
                   if (response === "granted") {
                       attachTouchStart()
                   }
@@ -113,8 +115,10 @@ function startShaking() {
   //getAccel();
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
-  document.removeEventListener("touchstart", startShaking);
+  window.removeEventListener("deviceorientation", leftFlatFromTable)
+  //document.removeEventListener("touchstart", startShaking);
   //document.addEventListener("touchstart", stopShaking);
+    
   window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
     die.body.addEventListener("collide", function (e) {
@@ -125,14 +129,23 @@ function startShaking() {
     });
     sounds_attached = true;
   }
+  gravityOff();
 }
 
 function stopShaking() {
   window.removeEventListener("devicemotion", readAccel);
-  document.addEventListener("touchstart", startShaking);
-  window.removeEventListener("deviceorientation", leftFlatFromTable)
+  //document.addEventListener("touchstart", startShaking);
+  window.removeEventListener("deviceorientation", enterFlatFromTable)
+  setTimeout(function(){
+      window.addEventListener("deviceorientation", leftFlatFromTable)
+    }, 5000);
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
-  window.alert("phone on table")
+  //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
+
+  die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
+  //die.body.type = CANNON.Body.STATIC;
+  DiceCup.destroy();
+  gravityOn();
   
 }
 
@@ -143,7 +156,6 @@ function phoneOnTable(){
 }
 
 function enterFlatFromTable(e){
-    console.log(e)
     if (Math.abs(e.beta) < FLAT_TO_TABLE_THRESHOLD || Math.abs(e.gamma) < FLAT_TO_TABLE_THRESHOLD){
         phoneOnTable()
         window.removeEventListener("deviceorientation", enterFlatFromTable)
@@ -153,12 +165,27 @@ function enterFlatFromTable(e){
 function leftFlatFromTable(e){
     //if phone exceeds 5deg from flat
     if (e.beta > FLAT_TO_TABLE_THRESHOLD || e.gamma > FLAT_TO_TABLE_THRESHOLD){
-        clearTimeout(trialEndTimer)
-        trialEndTimer = undefined;
+        if(trialEndTimer){
+              clearTimeout(trialEndTimer)
+              trialEndTimer = undefined;
+            }
+        else
+           {
+            startShaking()
+            }
         window.removeEventListener("deviceorientation", leftFlatFromTable)
         window.addEventListener("deviceorientation", enterFlatFromTable)
     }
 }
 
+function gravityOff(){
+    world.gravity.set(0,0,0);
+    console.log("gravity is off")
+}
+
+function gravityOn(){
+    world.gravity.set(0, -9.8, 0);
+    console.log("gravity is on")
+}
 
 assetsLoadedCallbacks.push(getPermission)
