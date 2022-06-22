@@ -1,6 +1,10 @@
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
 
+
+global.FLAT_TO_TABLE_THRESHOLD = 5
+global.TRIAL_END_TIME = 500
+
 function attachTouchStart(){
   document.addEventListener("touchstart", startShaking);
   console.log("Touch Start added")
@@ -9,10 +13,34 @@ function attachTouchStart(){
 function getPermission() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       // iOS 13+
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                var need_orientation_permission = true;
+            }
+            else
+            {
+                var need_orientation_permission = false;
+            }
+        
       try {
         DeviceMotionEvent.requestPermission().then((response) => {
           if (response === "granted") {
+              if (need_orientation_permission){
+                DeviceMotionEvent.requestPermission().then((response) => {
+                  if (response === "granted") {
+                      attachTouchStart()
+                  }
+                  else
+                  {
+                    window.alert("You can't participate without granting permission")
+                  }
+                });
+              } else {
               attachTouchStart()
+              }
+          }
+          else
+          {
+            window.alert("You can't participate without granting permission")
           }
         });
       } catch (e) {
@@ -86,7 +114,8 @@ function startShaking() {
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
   document.removeEventListener("touchstart", startShaking);
-  document.addEventListener("touchstart", stopShaking);
+  //document.addEventListener("touchstart", stopShaking);
+  window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
     die.body.addEventListener("collide", function (e) {
      if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10)
@@ -99,9 +128,36 @@ function startShaking() {
 }
 
 function stopShaking() {
-  document.removeEventListener("devicemotion", readAccel);
+  window.removeEventListener("devicemotion", readAccel);
   document.addEventListener("touchstart", startShaking);
+  window.removeEventListener("deviceorientation", leftFlatFromTable)
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
+  window.alert("phone on table")
+  
+}
+
+function phoneOnTable(){
+    global.trialEndTimer = setTimeout(stopShaking, TRIAL_END_TIME)
+    window.addEventListener("deviceorientation", leftFlatFromTable)
+    
+}
+
+function enterFlatFromTable(e){
+    console.log(e)
+    if (Math.abs(e.beta) < FLAT_TO_TABLE_THRESHOLD || Math.abs(e.gamma) < FLAT_TO_TABLE_THRESHOLD){
+        phoneOnTable()
+        window.removeEventListener("deviceorientation", enterFlatFromTable)
+    }
+}
+
+function leftFlatFromTable(e){
+    //if phone exceeds 5deg from flat
+    if (e.beta > FLAT_TO_TABLE_THRESHOLD || e.gamma > FLAT_TO_TABLE_THRESHOLD){
+        clearTimeout(trialEndTimer)
+        trialEndTimer = undefined;
+        window.removeEventListener("deviceorientation", leftFlatFromTable)
+        window.addEventListener("deviceorientation", enterFlatFromTable)
+    }
 }
 
 
