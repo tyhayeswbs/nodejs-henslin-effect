@@ -4,6 +4,10 @@ const ASSETS = require("./AssetLibrary.js")
 
 global.DiceCup = {}
 
+DiceCup.create = function() {
+
+console.log("running dice cup create")
+
 DiceCup.ground = new PhysicsBox(
   15,
   15,
@@ -75,6 +79,8 @@ DiceCup.wallTop.body.type = CANNON.Body.STATIC;
 DiceCup.wallLeft.body.type = CANNON.Body.STATIC;
 DiceCup.ground.body.type = CANNON.Body.STATIC;
 DiceCup.lid.body.type = CANNON.Body.STATIC;
+
+}
 
 DiceCup.destroy = function(){
     DiceCup.wallRight.destroy()

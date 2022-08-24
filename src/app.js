@@ -4,6 +4,7 @@ const THREE = require("three");
 const Scene = require("./Scene.js");
 const ASSETS = require("./AssetLibrary.js");
 require("./DiceCup.js");
+require("./Die.js");
 const {PhysicsBox} = require("./PhysicsBox.js");
 const {table} = require("./Table.js");
 
@@ -13,6 +14,7 @@ const IH = require("./InputHandler.js");
 
 global.sounds_attached = false;
 
+DiceCup.create()
 
 let initializeDie = function(){
 

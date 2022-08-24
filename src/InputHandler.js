@@ -5,6 +5,8 @@ const ASSETS = require("./AssetLibrary.js")
 global.FLAT_TO_TABLE_THRESHOLD = 5
 global.TRIAL_END_TIME = 500
 
+global.STATE = "LOADING"
+
 function attachTouchStart(){
   document.addEventListener("touchstart", startShaking);
   //document.addEventListener("deviceorientation", leftFlatFromTable);
@@ -113,10 +115,11 @@ function randInt(n) {
 function startShaking() {
   // window.accinterval = setInterval(getAccel, 200);
   //getAccel();
+  STATE = "TRIAL IN PROGRESS"
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
   window.removeEventListener("deviceorientation", leftFlatFromTable)
-  //document.removeEventListener("touchstart", startShaking);
+  document.removeEventListener("touchstart", startShaking);
   //document.addEventListener("touchstart", stopShaking);
     
   window.addEventListener("deviceorientation", enterFlatFromTable);
@@ -133,12 +136,15 @@ function startShaking() {
 }
 
 function stopShaking() {
+  STATE = "TRIAL END ANIMATION"
   window.removeEventListener("devicemotion", readAccel);
   //document.addEventListener("touchstart", startShaking);
   window.removeEventListener("deviceorientation", enterFlatFromTable)
   setTimeout(function(){
+      STATE = "TRIAL ENDED"
+      console.log("TRIAL ENDED")
       window.addEventListener("deviceorientation", leftFlatFromTable)
-    }, 5000);
+    }, 2000);
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
   //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 
@@ -152,11 +158,13 @@ function stopShaking() {
 function phoneOnTable(){
     global.trialEndTimer = setTimeout(stopShaking, TRIAL_END_TIME)
     window.addEventListener("deviceorientation", leftFlatFromTable)
+    STATE = "TRIAL END TIMEOUT"
     
 }
 
 function enterFlatFromTable(e){
-    if (Math.abs(e.beta) < FLAT_TO_TABLE_THRESHOLD || Math.abs(e.gamma) < FLAT_TO_TABLE_THRESHOLD){
+    if (Math.abs(e.beta) < FLAT_TO_TABLE_THRESHOLD || Math.abs(e.gamma) < FLAT_TO_TABLE_THRESHOLD
+        && STATE != "TRIAL END TIMEOUT"){
         phoneOnTable()
         window.removeEventListener("deviceorientation", enterFlatFromTable)
     }
@@ -165,13 +173,15 @@ function enterFlatFromTable(e){
 function leftFlatFromTable(e){
     //if phone exceeds 5deg from flat
     if (e.beta > FLAT_TO_TABLE_THRESHOLD || e.gamma > FLAT_TO_TABLE_THRESHOLD){
-        if(trialEndTimer){
+        if(STATE == "TRIAL END TIMEOUT"){
               clearTimeout(trialEndTimer)
               trialEndTimer = undefined;
             }
-        else
+        else if (STATE == "TRIAL ENDED")
            {
-            startShaking()
+            die.body.type = CANNON.Body.STATIC;
+            //startShaking()
+            new_trial()
             }
         window.removeEventListener("deviceorientation", leftFlatFromTable)
         window.addEventListener("deviceorientation", enterFlatFromTable)
@@ -186,6 +196,22 @@ function gravityOff(){
 function gravityOn(){
     world.gravity.set(0, -9.8, 0);
     console.log("gravity is on")
+}
+
+function reset_die_needs_refactor(){
+  let home_position = new CANNON.Vec3({ x: 1.5, y: 1.5, z: -30 })
+  // if die escapes,  teleport it back to the centre
+  die.body.position = home_position
+  console.log("resetting die position")
+}
+
+function new_trial(){
+    STATE = "LOADING"
+    DiceCup.create()
+    setTimeout(reset_die_needs_refactor, 300)
+    setTimeout(startShaking, 500);
+    console.log("running new_trial")
+    die.body.type = CANNON.Body.DYNAMIC
 }
 
 assetsLoadedCallbacks.push(getPermission)
