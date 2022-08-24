@@ -4,7 +4,7 @@ const THREE = require("three");
 const Scene = require("./Scene.js");
 const ASSETS = require("./AssetLibrary.js");
 require("./DiceCup.js");
-require("./Die.js");
+const {Die} = require("./Die.js");
 const {PhysicsBox} = require("./PhysicsBox.js");
 const {table} = require("./Table.js");
 
@@ -17,18 +17,21 @@ global.sounds_attached = false;
 DiceCup.create()
 
 let initializeDie = function(){
+    console.log("Die Initializing")
 
-    global.die = new PhysicsBox(
+    global.die = Die.getInstance(
+/*   global.die = new PhysicsBox(
       2,
       2,
-      2,
+      2,*/
       { x: 1.5, y: 1.5, z: -30 },
       scene,
       world,
       updateCallbacks,
       ASSETS.dieMaterial
     );
-    die.body.mass = 1;
+//    die.body.mass = 1;
+    
 }
 
 assetsLoadedCallbacks.push(initializeDie)

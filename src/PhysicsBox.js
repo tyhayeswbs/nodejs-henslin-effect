@@ -4,6 +4,7 @@ const ASSETS = require("./AssetLibrary.js")
 
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1); // width, height, depth
 
+
 class PhysicsBox {
   constructor(
     width,
@@ -20,6 +21,7 @@ class PhysicsBox {
     this.mesh = new THREE.Mesh(cubeGeometry, material);
 
     this.mesh.castShadow = true;
+    console.log(position)
     this.mesh.position.copy(position);
     this.mesh.scale.set(width, height, depth);
 
@@ -59,7 +61,7 @@ class PhysicsBox {
 
     tickCallbacks.push(this.tick);
 
-    console.log("created a physicsbox")
+    //console.log("created a physicsbox")
   }
 }
 

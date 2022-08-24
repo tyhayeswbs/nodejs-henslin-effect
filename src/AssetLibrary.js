@@ -10,7 +10,7 @@ console.log("stuff happening in AssetLibrary")
 
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 
-    console.log(`loading ${url}.\n${itemsLoaded}/${itemsTotal} loaded`)
+    //console.log(`loading ${url}.\n${itemsLoaded}/${itemsTotal} loaded`)
 
 }
 loadingManager.onLoad = () => {

@@ -15,17 +15,24 @@ function attachTouchStart(){
 
 
 function getPermission() {
+    var need_orientation_permission;
+    try {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
       // iOS 13+
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                var need_orientation_permission = true;
+                need_orientation_permission = true;
             }
             else
             {
-                var need_orientation_permission = false;
+                need_orientation_permission = false;
             }
-        
-      try {
+        }
+     } catch (e) {
+
+                need_orientation_permission = false;
+     }
+    if (need_orientation_permission){
+     try {
         DeviceMotionEvent.requestPermission().then((response) => {
           if (response === "granted") {
               if (need_orientation_permission){
@@ -52,7 +59,8 @@ function getPermission() {
           `Error encountered in request permission: ${e}`
         );
         }
-    } else {
+    }
+    else {
       // non iOS 13+
       attachTouchStart()
     }
@@ -78,6 +86,7 @@ function getAccel() {
 }
 
 function readAccel() {
+  console.log("reading acceleration")
   try {
     let acl = event.acceleration;
 
@@ -199,10 +208,11 @@ function gravityOn(){
 }
 
 function reset_die_needs_refactor(){
-  let home_position = new CANNON.Vec3({ x: 1.5, y: 1.5, z: -30 })
+/*  let home_position = new CANNON.Vec3({ x: 1.5, y: 1.5, z: -30 })
   // if die escapes,  teleport it back to the centre
   die.body.position = home_position
-  console.log("resetting die position")
+  console.log("resetting die position")*/
+  die.resetLocation()
 }
 
 function new_trial(){
