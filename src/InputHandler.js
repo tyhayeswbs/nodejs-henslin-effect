@@ -124,11 +124,11 @@ function randInt(n) {
 function startShaking() {
   // window.accinterval = setInterval(getAccel, 200);
   //getAccel();
+  window.removeEventListener("deviceorientation", leftFlatFromTable)
+  document.removeEventListener("touchstart", startShaking);
   STATE = "TRIAL IN PROGRESS"
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
-  window.removeEventListener("deviceorientation", leftFlatFromTable)
-  document.removeEventListener("touchstart", startShaking);
   //document.addEventListener("touchstart", stopShaking);
     
   window.addEventListener("deviceorientation", enterFlatFromTable);
@@ -145,15 +145,15 @@ function startShaking() {
 }
 
 function stopShaking() {
-  STATE = "TRIAL END ANIMATION"
   window.removeEventListener("devicemotion", readAccel);
   //document.addEventListener("touchstart", startShaking);
   window.removeEventListener("deviceorientation", enterFlatFromTable)
+  STATE = "TRIAL END ANIMATION"
   setTimeout(function(){
       STATE = "TRIAL ENDED"
       console.log("TRIAL ENDED")
       window.addEventListener("deviceorientation", leftFlatFromTable)
-    }, 2000);
+    }, 3000);
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
   //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 

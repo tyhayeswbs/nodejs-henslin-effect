@@ -18,6 +18,7 @@ class DieSingleton extends PhysicsBox {
         //die.body.position = new CANNON.Vec3({x: this.home.x, y: this.home.y, z: this.home.z})
         die.body.position.set(this.home.x, this.home.y, this.home.z);
         die.mesh.position.set(this.home.x, this.home.y, this.home.z);
+        die.body.type = CANNON.Body.DYNAMIC;
     }
 
 }
