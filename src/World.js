@@ -77,7 +77,6 @@ function update() {
     //console.log(func)
     func(delta);
   }
-
 //  cannonDebugger.update();
   //controls.update();
   // Draw!
@@ -85,6 +84,10 @@ function update() {
   //update the worldtime
   worldtime = newtime;
   // Schedule the next frame.
+
+  const e = new CustomEvent('worldUpdate', {detail: {delta: delta, worldtime: worldtime}})
+  document.dispatchEvent(e)
+
   requestAnimationFrame(update);
 }
 

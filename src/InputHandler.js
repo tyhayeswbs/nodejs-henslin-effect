@@ -1,5 +1,6 @@
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
+const {Die} = require("./Die.js")
 
 
 global.FLAT_TO_TABLE_THRESHOLD = 5
@@ -158,10 +159,11 @@ function stopShaking() {
   //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 
   die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
-  //die.body.type = CANNON.Body.STATIC;
   DiceCup.destroy();
   gravityOn();
-  
+  Die.simulate_forward()
+  die.body.type = CANNON.Body.STATIC;
+  Die.run_recorded_simulation()
 }
 
 function phoneOnTable(){
