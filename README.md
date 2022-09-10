@@ -1,6 +1,9 @@
 usage
 =====
 
+initial setup for WSL open port: netsh interface portproxy add v4tov4 listenport=1234 listenaddress=0.0.0.0 connectport=1234 connectaddress=[WSL's ip address]
+
+
 to build:  run `npm run-script build`
 
 to run: run `npm run-script serve`

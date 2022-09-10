@@ -2,6 +2,7 @@
 const {PhysicsBox} = require( "./PhysicsBox.js")
 const THREE = require("three")
 const CANNON = require("cannon-es")
+const ASSETS = require("./AssetLibrary.js")
 
 
 class DieSingleton extends PhysicsBox {
@@ -65,9 +66,6 @@ class Die extends PhysicsBox {
         clone_die.quaternion.copy(die.body.quaternion)
 
 
-        console.log(clone_die.velocity)
-        console.log(clone_die.angularVelocity)
-
         die.body.type = CANNON.Body.STATIC;
         const canonicalBody = die.body
         world.removeBody(canonicalBody)
@@ -96,19 +94,13 @@ class Die extends PhysicsBox {
                 break;
             }
         }
-        console.log(simulation)
-
         world.removeBody(clone_die)
         world.addBody(canonicalBody)
     }
 
     static step_recorded_simulation(e){
-        console.log("stepping sim")
-        console.log(e)
         let worldtime = e.detail.worldtime;
     
-        console.log(worldtime)
-        
         let current_params;
         if (window.simulation.length > 1)
         {
@@ -125,23 +117,30 @@ class Die extends PhysicsBox {
             new_rot.slerp(simulation[0].rot, lerp_amount)
             die.body.quaternion.copy(new_rot)
 
-            console.log(current_params)
-
-
             let new_pos = new CANNON.Vec3()
             current_params.pos.lerp(simulation[0].pos, lerp_amount, new_pos)
             die.body.position.copy(new_pos)
         }
         else if (window.simulation.length == 1)
         {
-        current_params = simulation.shift()
-        die.body.quaternion.copy(current_params.rot)
-        die.body.position.copy(current_params.pos)
-        document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            current_params = simulation.shift()
+            die.body.quaternion.copy(current_params.rot)
+            die.body.position.copy(current_params.pos)
+            document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            document.dispatchEvent(new Event('simulationReplayFinished'))
+            let target_no = Math.ceil(Math.random() * 6)
+            console.log(`targetting ${target_no}`)
+            Die.set_up_face(Die.get_up_face(), target_no)
+            console.log('simulationReplayFinished dispatched')
         }
         else
         {
-        document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            document.dispatchEvent(new Event('simulationReplayFinished'))
+            let target_no = Math.ceil(Math.random() * 6)
+            console.log(`targetting ${target_no}`)
+            Die.set_up_face(Die.get_up_face(), target_no)
+            console.log('simulationReplayFinished dispatched')
         }
 
     }
@@ -149,6 +148,71 @@ class Die extends PhysicsBox {
     static run_recorded_simulation(){
         console.log("adding event listener")
         document.addEventListener('worldUpdate', Die.step_recorded_simulation)
+    }
+
+
+    static get_up_face(){
+        let localUp = new CANNON.Vec3();
+        let inverseDieOrientation = new CANNON.Quaternion()
+        let limit = Math.sin(Math.PI /4) //TODO: This probably wants tuning
+
+        localUp.set(0,1,0);
+        die.body.quaternion.inverse(inverseDieOrientation);
+        inverseDieOrientation.vmult(localUp, localUp);
+
+        // Check which side is up
+        if(localUp.x > limit){
+            console.log("Positive x is up")
+            return "posx"
+        } else if(localUp.x < -limit){
+            console.log("Negative x is up")
+            return "negx"
+        } else if(localUp.y > limit){
+            console.log("Positive y is up")
+            return "posy"
+        } else if(localUp.y < -limit){
+            console.log("Negative y is up")
+            return "negy"
+        } else if(localUp.z > limit){
+            console.log("Positive z is up")
+            return "posz"
+        } else if(localUp.z < -limit){
+            console.log("Negative z is up")
+            return "negz"
+        } else {
+            console.log("Die is cocked")
+            return "cocked"
+        }
+
+    }
+
+   static set_up_face(upaxis, output) {
+        if (upaxis == "cocked"){
+            console.log("die is cocked. Abandoning")
+            return //TODO:  this should call for a reroll
+        }
+        let dieFaceMaterialsx1 = ASSETS.dieMaterialx1
+        let dieFaceMaterialsx2 = ASSETS.dieMaterialx2
+        let dieFaceMaterialsx3 = ASSETS.dieMaterialx3
+        let dieFaceMaterialsx4 = ASSETS.dieMaterialx4
+        let dieFaceMaterialsx5 = ASSETS.dieMaterialx5
+        let dieFaceMaterialsx6 = ASSETS.dieMaterialx6
+
+        console.log(`upaxis: ${upaxis}, output: ${output}`)
+
+        const lookup = {  "posx": [ undefined, dieFaceMaterialsx1, dieFaceMaterialsx2, dieFaceMaterialsx3, dieFaceMaterialsx4, dieFaceMaterialsx5, dieFaceMaterialsx6],
+                          "negx": [ undefined, dieFaceMaterialsx6, dieFaceMaterialsx5, dieFaceMaterialsx4, dieFaceMaterialsx3, dieFaceMaterialsx2, dieFaceMaterialsx1],
+                          "posy": [ undefined, dieFaceMaterialsx3, dieFaceMaterialsx1, dieFaceMaterialsx5, dieFaceMaterialsx6, dieFaceMaterialsx4, dieFaceMaterialsx2],
+                          "negy": [ undefined, dieFaceMaterialsx2, dieFaceMaterialsx4, dieFaceMaterialsx6, dieFaceMaterialsx5, dieFaceMaterialsx1, dieFaceMaterialsx3],
+                          "posz": [ undefined, dieFaceMaterialsx5, dieFaceMaterialsx6, dieFaceMaterialsx1, dieFaceMaterialsx2, dieFaceMaterialsx3, dieFaceMaterialsx4],
+                          "negz": [ undefined, dieFaceMaterialsx4, dieFaceMaterialsx3, dieFaceMaterialsx2, dieFaceMaterialsx1, dieFaceMaterialsx6, dieFaceMaterialsx5],
+                        }
+
+        console.log(lookup)
+        console.log(lookup[upaxis][output])
+        let dieMaterials = lookup[upaxis][output]
+        die.mesh.material = dieMaterials
+
     }
 
 }

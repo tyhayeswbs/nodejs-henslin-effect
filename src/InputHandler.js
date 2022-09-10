@@ -87,7 +87,6 @@ function getAccel() {
 }
 
 function readAccel() {
-  console.log("reading acceleration")
   try {
     let acl = event.acceleration;
 
@@ -149,12 +148,7 @@ function stopShaking() {
   window.removeEventListener("devicemotion", readAccel);
   //document.addEventListener("touchstart", startShaking);
   window.removeEventListener("deviceorientation", enterFlatFromTable)
-  STATE = "TRIAL END ANIMATION"
-  setTimeout(function(){
-      STATE = "TRIAL ENDED"
-      console.log("TRIAL ENDED")
-      window.addEventListener("deviceorientation", leftFlatFromTable)
-    }, 3000);
+  document.addEventListener('simulationReplayFinished', trialEnd);
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
   //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 
@@ -163,7 +157,17 @@ function stopShaking() {
   gravityOn();
   Die.simulate_forward()
   die.body.type = CANNON.Body.STATIC;
+  STATE = "SIMULATION REPLAYING"
   Die.run_recorded_simulation()
+  
+}
+
+function trialEnd() {
+      STATE = "TRIAL ENDED"
+      console.log("TRIAL ENDED")
+      document.removeEventListener('simulationReplayFinished', trialEnd)
+      window.addEventListener("deviceorientation", leftFlatFromTable)
+
 }
 
 function phoneOnTable(){

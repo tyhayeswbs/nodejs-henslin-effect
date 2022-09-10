@@ -26,38 +26,88 @@ loadingManager.onError = (url) => {
 }
 
 
-const dieMaterial = [
+const dieFaceMaterials = [undefined];
+
+for (let i = 1; i < 7; i++){
+
+    dieFaceMaterials.push(new THREE.MeshLambertMaterial({
+                            map: textureLoader.load(`img/${i}.png`),
+                            side: THREE.DoubleSide
+                          }))
+    console.log(dieFaceMaterials)
+}
+/*
+const dieMaterialx1 = [
   new THREE.MeshLambertMaterial({
     map: textureLoader.load("img/1.png"),
-    //transparent: true,
     side: THREE.DoubleSide
-  }), //right side
-  new THREE.MeshLambertMaterial({
-    map: textureLoader.load("img/2.png"),
-    //transparent: true,
-    side: THREE.DoubleSide
-  }), //left side
-  new THREE.MeshLambertMaterial({
-    map: textureLoader.load("img/3.png"),
-    //transparent: true,
-    side: THREE.DoubleSide
-  }), //top side
-  new THREE.MeshLambertMaterial({
-    map: textureLoader.load("img/4.png"),
-    //transparent: true,
-    side: THREE.DoubleSide
-  }), //bottom side
-  new THREE.MeshLambertMaterial({
-    map: textureLoader.load("img/5.png"),
-    //transparent: true,
-    side: THREE.DoubleSide
-  }), //front side
+  }), //right side  +x
   new THREE.MeshLambertMaterial({
     map: textureLoader.load("img/6.png"),
-    //transparent: true,
     side: THREE.DoubleSide
-  }) //back side
+  }), //left side  -x
+  new THREE.MeshLambertMaterial({
+    map: textureLoader.load("img/2.png"),
+    side: THREE.DoubleSide
+  }), //top side  +y
+  new THREE.MeshLambertMaterial({
+    map: textureLoader.load("img/5.png"),
+    side: THREE.DoubleSide
+  }), //bottom side -y
+  new THREE.MeshLambertMaterial({
+    map: textureLoader.load("img/3.png"),
+    side: THREE.DoubleSide
+  }), //front side +z
+  new THREE.MeshLambertMaterial({
+    map: textureLoader.load("img/4.png"),
+    side: THREE.DoubleSide
+  }) //back side -z
 ];
+*/
+
+const dieMaterialx1 = [dieFaceMaterials[1], 
+                       dieFaceMaterials[6], 
+                       dieFaceMaterials[2], 
+                       dieFaceMaterials[5], 
+                       dieFaceMaterials[3], 
+                       dieFaceMaterials[4]]
+
+const dieMaterialx2 = [dieFaceMaterials[2], 
+                       dieFaceMaterials[5], 
+                       dieFaceMaterials[6], 
+                       dieFaceMaterials[1], 
+                       dieFaceMaterials[4], 
+                       dieFaceMaterials[3]]
+
+const dieMaterialx3 = [dieFaceMaterials[3], 
+                       dieFaceMaterials[4], 
+                       dieFaceMaterials[1], 
+                       dieFaceMaterials[6], 
+                       dieFaceMaterials[5], 
+                       dieFaceMaterials[2]]
+
+const dieMaterialx4 = [dieFaceMaterials[4], 
+                       dieFaceMaterials[3], 
+                       dieFaceMaterials[5], 
+                       dieFaceMaterials[2], 
+                       dieFaceMaterials[6], 
+                       dieFaceMaterials[1]]
+
+const dieMaterialx5 = [dieFaceMaterials[5], 
+                       dieFaceMaterials[2], 
+                       dieFaceMaterials[3], 
+                       dieFaceMaterials[4], 
+                       dieFaceMaterials[1], 
+                       dieFaceMaterials[6]]
+
+const dieMaterialx6 = [dieFaceMaterials[6], 
+                       dieFaceMaterials[1], 
+                       dieFaceMaterials[4], 
+                       dieFaceMaterials[3], 
+                       dieFaceMaterials[2], 
+                       dieFaceMaterials[5]]
+
+const dieMaterial = dieMaterialx1
 
 
 const groundMaterial = new THREE.MeshLambertMaterial({
@@ -129,4 +179,8 @@ module.exports = {groundMaterial, groundMaterials,
                   baisePhysicsMaterial,
                   backboardPhysicsMaterial,
                   baiseMaterial,
+                  dieMaterialx1, dieMaterialx2, dieMaterialx3,
+                  dieMaterialx4, dieMaterialx5, dieMaterialx6,
+                  dieFaceMaterials
+
                 }

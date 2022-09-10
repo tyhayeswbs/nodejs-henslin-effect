@@ -58,4 +58,4 @@ function reset_die(){
   }
 }
 
-
+window.CANNON = CANNON
