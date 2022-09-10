@@ -94,6 +94,9 @@ class Die extends PhysicsBox {
                 break;
             }
         }
+        let target_no = Math.ceil(Math.random() * 6)
+        console.log(`targetting ${target_no}`)
+        Die.set_up_face(Die.get_up_face(clone_die), target_no)
         world.removeBody(clone_die)
         world.addBody(canonicalBody)
     }
@@ -128,18 +131,12 @@ class Die extends PhysicsBox {
             die.body.position.copy(current_params.pos)
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             document.dispatchEvent(new Event('simulationReplayFinished'))
-            let target_no = Math.ceil(Math.random() * 6)
-            console.log(`targetting ${target_no}`)
-            Die.set_up_face(Die.get_up_face(), target_no)
             console.log('simulationReplayFinished dispatched')
         }
         else
         {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             document.dispatchEvent(new Event('simulationReplayFinished'))
-            let target_no = Math.ceil(Math.random() * 6)
-            console.log(`targetting ${target_no}`)
-            Die.set_up_face(Die.get_up_face(), target_no)
             console.log('simulationReplayFinished dispatched')
         }
 
@@ -151,13 +148,13 @@ class Die extends PhysicsBox {
     }
 
 
-    static get_up_face(){
+    static get_up_face(body){
         let localUp = new CANNON.Vec3();
         let inverseDieOrientation = new CANNON.Quaternion()
         let limit = Math.sin(Math.PI /4) //TODO: This probably wants tuning
 
         localUp.set(0,1,0);
-        die.body.quaternion.inverse(inverseDieOrientation);
+        body.quaternion.inverse(inverseDieOrientation);
         inverseDieOrientation.vmult(localUp, localUp);
 
         // Check which side is up
