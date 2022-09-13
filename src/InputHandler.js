@@ -155,17 +155,36 @@ function stopShaking() {
   die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
   DiceCup.destroy();
   gravityOn();
-  Die.simulate_forward()
+
+  liveSend(window.readings)
+
+  document.addEventListener("serverTrialCoda", serverResponded)
+  STATE = "AWAITING RESPONSE FROM SERVER"
+  
+}
+
+function serverResponded(){
+  document.removeEventListener("serverTrialCode", serverResponded)
+  Die.simulate_forward(window.result)
+  //delete window.randomResult
   die.body.type = CANNON.Body.STATIC;
   STATE = "SIMULATION REPLAYING"
   Die.run_recorded_simulation()
-  
 }
 
 function trialEnd() {
       STATE = "TRIAL ENDED"
       console.log("TRIAL ENDED")
       document.removeEventListener('simulationReplayFinished', trialEnd)
+      if (window.target == window.result){
+            jQuery('#win-toast').removeClass('hide')
+        }
+      else
+       {
+            jQuery('#lose-toast').removeClass('hide')
+        }
+
+        jQuery('#trial-end-toast').removeClass('hide')
       window.addEventListener("deviceorientation", leftFlatFromTable)
 
 }

@@ -6,6 +6,10 @@ const textureLoader = new THREE.TextureLoader(loadingManager);
 const audioLoader = new THREE.AudioLoader(loadingManager);
 
 console.log("stuff happening in AssetLibrary")
+if (!window.staticRoot)
+{
+window.staticRoot = ""
+}
 
 
 loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
@@ -31,7 +35,7 @@ const dieFaceMaterials = [undefined];
 for (let i = 1; i < 7; i++){
 
     dieFaceMaterials.push(new THREE.MeshLambertMaterial({
-                            map: textureLoader.load(`img/${i}.png`),
+                            map: textureLoader.load(`${window.staticRoot}img/${i}.png`),
                             side: THREE.DoubleSide
                           }))
     console.log(dieFaceMaterials)
@@ -156,7 +160,7 @@ const listener = new THREE.AudioListener();
 
 for (var i = 1; i <= 6; i++) {
   let sound = new THREE.Audio(listener);
-  audioLoader.load(`sounds/dice sound ${i}.mp3`, function (buffer) {
+  audioLoader.load(`${window.staticRoot}sounds/dice sound ${i}.mp3`, function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(false);
         sound.setVolume(1.0);

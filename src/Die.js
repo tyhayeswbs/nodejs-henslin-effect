@@ -47,7 +47,7 @@ class Die extends PhysicsBox {
     }
 
 
-    static simulate_forward(){
+    static simulate_forward(result){
         die = Die.getInstance()
 
         let clone_die = new CANNON.Body({
@@ -94,11 +94,10 @@ class Die extends PhysicsBox {
                 break;
             }
         }
-        let target_no = Math.ceil(Math.random() * 6)
-        console.log(`targetting ${target_no}`)
-        Die.set_up_face(Die.get_up_face(clone_die), target_no)
+        Die.set_up_face(Die.get_up_face(clone_die), result)
         world.removeBody(clone_die)
         world.addBody(canonicalBody)
+        console.log("simulation finished")
     }
 
     static step_recorded_simulation(e){

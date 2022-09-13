@@ -94,6 +94,13 @@
             <button type="button" id="startButton">Begin</button>
         </div>
     </div>
+    <div id="trial-end-toast" class="toast" role="alert" data-autohide="false">
+    
+        <div class="toast-body hide" id="lose-toast">Sorry, you lost.  Better luck next time</div>
+        <div class="toast-body hide" id="win-toast">Congratualtions, you won!  Good luck for next time</div>
+    
+        {{next_button}}
+    </div>
 	<script src="app.js" type="module">
         
 	</script>
