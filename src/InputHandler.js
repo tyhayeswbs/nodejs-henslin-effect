@@ -112,7 +112,6 @@ function readAccel() {
 function impartAcceleration(x, y, z, interval) {
   die.body.wakeUp();
 
-    console.log(`imparting acceleration: ${x}, ${y}, ${z}, ${interval}`)
     let duration = isIOS ? interval * 10 :  (interval / 100); //iOs reports in seconds (eg 0.0167) but android in milliseconds (16) 50 is fairly good
     let acc = new CANNON.Vec3(x * duration, y * duration, z * duration);
     die.body.applyImpulse(acc);

@@ -45,8 +45,6 @@ class PhysicsBox {
 
     this.body.position.copy(this.mesh.position);
 
-    //body.addEventListener('collide', playHitSound)
-
     physicsWorld.addBody(this.body);
 
     this.tick = (delta) => {
