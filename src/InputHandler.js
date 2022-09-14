@@ -1,4 +1,5 @@
 const CANNON = require("cannon-es")
+const THREE = require("three")
 const ASSETS = require("./AssetLibrary.js")
 const {Die} = require("./Die.js")
 
@@ -133,6 +134,9 @@ function startShaking() {
     
   window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
+    //for (let sound of ASSETS.sounds){
+    //    sound.context.resume()
+    //}
     die.body.addEventListener("collide", function (e) {
      if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10)
       {

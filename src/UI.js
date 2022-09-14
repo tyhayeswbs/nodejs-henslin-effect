@@ -1,4 +1,4 @@
-
+const ASSETS = require("./AssetLibrary.js")
 global.domReadyCallbacks = [];
 
 global.assetsLoadedCallbacks = [];
@@ -12,6 +12,9 @@ function domReadyFunctions(){
         for (let func of assetsLoadedCallbacks){
             func()
         }   
+        for (let sound of ASSETS.sounds){
+            sound.context.resume()
+        }
     });
 
     for (let func of domReadyCallbacks){
