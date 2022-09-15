@@ -1,8 +1,9 @@
 const CANNON = require("cannon-es")
+const THREE = require("three")
 const ASSETS = require("./AssetLibrary.js")
 const {Die} = require("./Die.js")
 
-
+global.isIOS = /iPad|iPhone|iPod/.test(navigator.platform)
 global.FLAT_TO_TABLE_THRESHOLD = 5
 global.TRIAL_END_TIME = 500
 
@@ -112,7 +113,7 @@ function readAccel() {
 function impartAcceleration(x, y, z, interval) {
   die.body.wakeUp();
 
-    let duration = interval / 100; //50 is fairly good
+    let duration = isIOS ? interval * 10 :  (interval / 100); //iOs reports in seconds (eg 0.0167) but android in milliseconds (16) 50 is fairly good
     let acc = new CANNON.Vec3(x * duration, y * duration, z * duration);
     die.body.applyImpulse(acc);
 }
@@ -133,6 +134,9 @@ function startShaking() {
     
   window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
+    //for (let sound of ASSETS.sounds){
+    //    sound.context.resume()
+    //}
     die.body.addEventListener("collide", function (e) {
      if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10)
       {
