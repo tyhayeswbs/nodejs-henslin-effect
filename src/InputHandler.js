@@ -189,7 +189,7 @@ function trialEnd() {
         }
 
         jQuery('#trial-end-toast').removeClass('hide')
-      window.addEventListener("deviceorientation", leftFlatFromTable)
+      //window.addEventListener("deviceorientation", leftFlatFromTable)
 
 }
 
@@ -219,7 +219,7 @@ function leftFlatFromTable(e){
            {
             die.body.type = CANNON.Body.STATIC;
             //startShaking()
-            new_trial()
+            //new_trial()
             }
         window.removeEventListener("deviceorientation", leftFlatFromTable)
         window.addEventListener("deviceorientation", enterFlatFromTable)
