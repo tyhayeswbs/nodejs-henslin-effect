@@ -91,10 +91,14 @@ class Die extends PhysicsBox {
 
             simulation.push(params) //  each triple here is time elapsed in seconds, Vec3, Vec3
 
+            if (new CANNON.Vec3(0,0,0).distanceTo(clone_die.position) > 60){
+                throw "die out of bounds"
+            }
+
             timeout_counter--;  //just in case the die escapes bounds and we're stuck in an infinite loop
             if (timeout_counter < 1){
                 console.log(simulation)
-                throw new Error("invalid trial")
+                throw "die doesn't stop"
                 break;
             }
         }
@@ -189,6 +193,7 @@ class Die extends PhysicsBox {
    static set_up_face(upaxis, output) {
         if (upaxis == "cocked"){
             console.log("die is cocked. Abandoning")
+            throw "die is cocked"
             return //TODO:  this should call for a reroll
         }
         let dieFaceMaterialsx1 = ASSETS.dieMaterialx1

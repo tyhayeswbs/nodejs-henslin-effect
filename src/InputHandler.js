@@ -169,7 +169,13 @@ function stopShaking() {
 
 function serverResponded(){
   document.removeEventListener("serverTrialCode", serverResponded)
-  Die.simulate_forward(window.result)
+  try {
+      Die.simulate_forward(window.result)
+    }
+  catch (err){
+       alert("An error occurred:" + err + ".  Reloading trial...")
+       window.location.reload()
+   }
   //delete window.randomResult
   die.body.type = CANNON.Body.STATIC;
   STATE = "SIMULATION REPLAYING"
