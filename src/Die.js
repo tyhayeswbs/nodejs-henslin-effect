@@ -84,6 +84,8 @@ class Die extends PhysicsBox {
                 "velocity": new CANNON.Vec3().copy(clone_die.velocity), 
                 "angV": new CANNON.Vec3().copy(clone_die.angularVelocity),
                 }
+
+
             elapsed += 1000/30;
             world.step(33/1000, 20);
 
@@ -91,6 +93,8 @@ class Die extends PhysicsBox {
 
             timeout_counter--;  //just in case the die escapes bounds and we're stuck in an infinite loop
             if (timeout_counter < 1){
+                console.log(simulation)
+                throw new Error("invalid trial")
                 break;
             }
         }

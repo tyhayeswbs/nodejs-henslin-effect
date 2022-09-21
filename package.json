@@ -6,7 +6,7 @@
     "start": "npm run dev",
     "comment-dev": "parcel --public-url ./dist src/index.html",
     "dev": "parcel src/index.html",
-    "build": "rm dist/index.* && parcel build --public-url ./ src/index.html && rm otree_app/dice_rolling/static/dice_rolling/index.* && cp dist/index.* otree_app/dice_rolling/static/dice_rolling && ln -s ~/dicerolling/'dice rolling'/otree_app/dice_rolling/static/dice_rolling/index.*.js index.js && mv index.js otree_app/dice_rolling/static/dice_rolling",
+    "build": "rm dist/index.* && parcel build --public-url ./ src/index.html && rm otree_app/dice_rolling/static/dice_rolling/index.* && cp dist/index.* otree_app/dice_rolling/static/dice_rolling && ln -s ~/dicerolling/otree_app/dice_rolling/static/dice_rolling/index.*.js index.js && mv index.js otree_app/dice_rolling/static/dice_rolling",
     "serve": "parcel serve --no-hmr --https --host 0.0.0.0 src/index.html",
     "deploy": "now"
   },
