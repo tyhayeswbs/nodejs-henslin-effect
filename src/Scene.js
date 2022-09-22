@@ -28,7 +28,7 @@ function flyCameraTo(start_posn, target_vec3, start_time, duration){
     let percentage = Math.min(1 - (end_time - Date.now())/duration, 1)
     console.log(percentage)
     camera.position.lerpVectors(start_posn, target_posn_vec3, percentage)
-    //camera.lookAt(target_vec3)
+    camera.lookAt(target_vec3)
     //controls.target.set(target_vec3)
     controls.update()
 }
