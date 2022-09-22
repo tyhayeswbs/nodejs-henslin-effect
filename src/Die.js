@@ -1,6 +1,7 @@
 //import "./PhysicsBox.js"
 const {PhysicsBox} = require( "./PhysicsBox.js")
 const THREE = require("three")
+const SCENE = require("./Scene.js")
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
 
@@ -137,13 +138,25 @@ class Die extends PhysicsBox {
             die.body.quaternion.copy(current_params.rot)
             die.body.position.copy(current_params.pos)
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            const start_time = Date.now()
+            updateCallbacks.push(function(){ 
+                SCENE.flyCameraTo(SCENE.camera.position, current_params.pos, start_time, 3000)
+                })
+            setTimeout(function(){
             document.dispatchEvent(new Event('simulationReplayFinished'))
+            }, 3000)
             console.log('simulationReplayFinished dispatched')
         }
         else
         {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+            const start_time = Date.now()
+            updateCallbacks.push(function(){ 
+                SCENE.flyCameraTo(SCENE.camera.position, die.body.position, start_time, 3000)
+                })
+            setTimeout(function(){
             document.dispatchEvent(new Event('simulationReplayFinished'))
+            }, 3000)
             console.log('simulationReplayFinished dispatched')
         }
 

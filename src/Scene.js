@@ -1,4 +1,5 @@
 const THREE = require("three");
+//const TWEENJS = require("tween.js")
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
 
@@ -19,6 +20,18 @@ const container = document.querySelector("#app");
 const renderer = new THREE.WebGLRenderer();
 const camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 camera.lookAt({ x: 0, y: 0, z: -300 });
+
+function flyCameraTo(start_posn, target_vec3, start_time, duration){
+    let target_posn_vec3 = target_vec3.clone()
+    target_posn_vec3.y += 50;
+    let end_time = start_time + duration;
+    let percentage = Math.min(1 - (end_time - Date.now())/duration, 1)
+    console.log(percentage)
+    camera.position.lerpVectors(start_posn, target_posn_vec3, percentage)
+    //camera.lookAt(target_vec3)
+    //controls.target.set(target_vec3)
+    controls.update()
+}
 
 /*
 const listener = new THREE.AudioListener();
@@ -85,5 +98,5 @@ pointLight2.position.z = -300;
 // add to the scene
 scene.add(pointLight2);
 
-module.exports = {scene, renderer, camera}
+module.exports = {scene, renderer, camera, flyCameraTo}
 
