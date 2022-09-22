@@ -139,11 +139,13 @@ class Die extends PhysicsBox {
             die.body.position.copy(current_params.pos)
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
-            updateCallbacks.push(function(){ 
+            const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position, current_params.pos, start_time, 3000)
-                })
+                }
+            document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
-            document.dispatchEvent(new Event('simulationReplayFinished'))
+                document.dispatchEvent(new Event('simulationReplayFinished'))
+                document.removeEventListener('worldUpdate', closure)
             }, 3000)
             console.log('simulationReplayFinished dispatched')
         }
