@@ -79,7 +79,7 @@ class Die extends PhysicsBox {
 
         let timeout_counter = 5*30 //5 seconds should be enough
 
-        while (!(clone_die.velocity.almostZero() && clone_die.angularVelocity.almostZero())){
+        while (!(clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6))){
 
               let params = {"time": simulationStartWorldTime + elapsed, "pos" : new CANNON.Vec3().copy(clone_die.position), "rot": new THREE.Quaternion().copy(clone_die.quaternion), 
                 "velocity": new CANNON.Vec3().copy(clone_die.velocity), 
@@ -92,14 +92,35 @@ class Die extends PhysicsBox {
 
             simulation.push(params) //  each triple here is time elapsed in seconds, Vec3, Vec3
 
+            //just in case the die escapes bounds and we're stuck in an infinite loop
             if (new CANNON.Vec3(0,0,0).distanceTo(clone_die.position) > 60){
                 throw "die out of bounds"
             }
 
-            timeout_counter--;  //just in case the die escapes bounds and we're stuck in an infinite loop
+            timeout_counter--;  
+            //or if the die never stops moving for some inexplicable reason
             if (timeout_counter < 1){
                 console.log(simulation)
                 throw "die doesn't stop"
+                break;
+            }
+
+
+            //fails to handle strange vibration condition
+            let len = simulation.length
+            function quaternionDifferenceAlmostZero(q1,q2,precision){
+                if( Math.abs(q1.x - q2.x) > precision)
+                    return false
+                if( Math.abs(q1.y - q2.y) > precision)
+                    return false
+                if( Math.abs(q1.z - q2.z) > precision)
+                    return false
+                if( Math.abs(q1.w - q2.w) > precision)
+                    return false
+            return true
+            }
+            if ((len > 3) && (simulation[len - 1].pos.vsub(simulation[len - 3].pos).almostZero(1e-3) && quaternionDifferenceAlmostZero(simulation[len - 1].rot,simulation[len - 3].rot, 1e-3)))
+            {
                 break;
             }
         }

@@ -71,22 +71,6 @@ function getPermission() {
 
 
 
-function getAccel() {
-  window.addEventListener("devicemotion", readAccel);
-  setTimeout(function () {
-    window.removeEventListener("devicemotion", readAccel);
-
-    let max_magnitude = Math.max(...window.readings.map(({ w }) => w));
-
-    let scratchpad = document.querySelector("#data");
-    scratchpad.insertAdjacentHTML(
-      "afterbegin",
-      `<p>max speed: ${max_magnitude}</p>`
-    );
-    console.log(window.readings);
-  }, 5000);
-}
-
 function readAccel() {
   try {
     let acl = event.acceleration;
@@ -123,8 +107,6 @@ function randInt(n) {
 }
 
 function startShaking() {
-  // window.accinterval = setInterval(getAccel, 200);
-  //getAccel();
   window.removeEventListener("deviceorientation", leftFlatFromTable)
   document.removeEventListener("touchstart", startShaking);
   STATE = "TRIAL IN PROGRESS"
