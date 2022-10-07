@@ -168,6 +168,19 @@ for (var i = 1; i <= 6; i++) {
   });
 }
 
+var shortBleep = new THREE.Audio(listener);
+  audioLoader.load(`${window.staticRoot}sounds/short_bleep.mp3`, function (buffer) {
+        shortBleep.setBuffer(buffer);
+        shortBleep.setLoop(false);
+        shortBleep.setVolume(1.0);
+        shortBleep.push(sound);
+  });
+var longBleep = new THREE.Audio(listener);
+  audioLoader.load(`${window.staticRoot}sounds/long_bleep.mp3`, function (buffer) {
+        longBleep.setBuffer(buffer);
+        longBleep.setLoop(false);
+        longBleep.setVolume(1.0);
+  });
 
 const defaultPhysicsMaterial = new CANNON.Material("defaultMaterial")
 
@@ -185,6 +198,8 @@ module.exports = {groundMaterial, groundMaterials,
                   baiseMaterial,
                   dieMaterialx1, dieMaterialx2, dieMaterialx3,
                   dieMaterialx4, dieMaterialx5, dieMaterialx6,
-                  dieFaceMaterials
+                  dieFaceMaterials,
+                  shortBleep,
+                  longBleep,
 
                 }

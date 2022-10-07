@@ -107,14 +107,14 @@ function randInt(n) {
 }
 
 function startShaking() {
-  window.removeEventListener("deviceorientation", leftFlatFromTable)
+  //window.removeEventListener("deviceorientation", leftFlatFromTable)
   document.removeEventListener("touchstart", startShaking);
   STATE = "TRIAL IN PROGRESS"
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
   //document.addEventListener("touchstart", stopShaking);
     
-  window.addEventListener("deviceorientation", enterFlatFromTable);
+  //window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
     //for (let sound of ASSETS.sounds){
     //    sound.context.resume()
@@ -128,6 +128,20 @@ function startShaking() {
     sounds_attached = true;
   }
   gravityOff();
+  window.setTimeout(shortBleep, 1000)
+  window.setTimeout(shortBleep, 2000)
+  window.setTimeout(shortBleep, 3000)
+  window.setTimeout(shortBleep, 4000)
+  window.setTimeout(longBleep, 5000)
+  window.setTimeout(stopShaking, 5000)
+}
+
+function shortBleep(){
+    ASSETS.shortBleep.play()
+}
+
+function longBleep(){
+    ASSETS.longBleep.play()
 }
 
 function stopShaking() {
@@ -150,7 +164,7 @@ function stopShaking() {
 }
 
 function serverResponded(){
-  document.removeEventListener("serverTrialCode", serverResponded)
+  document.removeEventListener("serverTrialCoda", serverResponded)
   try {
       Die.simulate_forward(window.result)
     }
