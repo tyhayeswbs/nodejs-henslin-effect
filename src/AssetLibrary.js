@@ -173,7 +173,6 @@ var shortBleep = new THREE.Audio(listener);
         shortBleep.setBuffer(buffer);
         shortBleep.setLoop(false);
         shortBleep.setVolume(1.0);
-        shortBleep.push(sound);
   });
 var longBleep = new THREE.Audio(listener);
   audioLoader.load(`${window.staticRoot}sounds/long_bleep.mp3`, function (buffer) {

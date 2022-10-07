@@ -109,6 +109,7 @@ function randInt(n) {
 function startShaking() {
   //window.removeEventListener("deviceorientation", leftFlatFromTable)
   document.removeEventListener("touchstart", startShaking);
+  document.addEventListener('worldUpdate', Die.checkForEscape)
   STATE = "TRIAL IN PROGRESS"
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
@@ -129,9 +130,7 @@ function startShaking() {
   }
   gravityOff();
   window.setTimeout(shortBleep, 1000)
-  window.setTimeout(shortBleep, 2000)
   window.setTimeout(shortBleep, 3000)
-  window.setTimeout(shortBleep, 4000)
   window.setTimeout(longBleep, 5000)
   window.setTimeout(stopShaking, 5000)
 }
@@ -146,6 +145,7 @@ function longBleep(){
 
 function stopShaking() {
   window.removeEventListener("devicemotion", readAccel);
+  document.removeEventListener('worldUpdate', Die.checkForEscape)
   //document.addEventListener("touchstart", startShaking);
   window.removeEventListener("deviceorientation", enterFlatFromTable)
   document.addEventListener('simulationReplayFinished', trialEnd);

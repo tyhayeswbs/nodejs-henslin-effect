@@ -47,6 +47,16 @@ class Die extends PhysicsBox {
         die.body.type = CANNON.Body.DYNAMIC;
     }
 
+    static checkForEscape(){
+        die = Die.getInstance()
+        if (window.STATE != "TRIAL ACTIVE"){
+            document.removeEventListener('worldUpdate', Die.checkForEscape)
+        }
+        if (die.home.distanceTo(die.position) > 10){
+                throw "die escaped from dice cup prematurely"
+            }
+        }
+    }
 
     static simulate_forward(result){
         die = Die.getInstance()
