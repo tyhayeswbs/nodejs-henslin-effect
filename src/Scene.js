@@ -19,7 +19,8 @@ const container = document.querySelector("#app");
 // and a scene
 const renderer = new THREE.WebGLRenderer();
 const camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-camera.lookAt({ x: 0, y: 0, z: -300 });
+
+window.camera = camera;
 
 function flyCameraTo(start_posn, target_vec3, start_time, duration){
     let target_posn_vec3 = target_vec3.clone()
@@ -28,9 +29,9 @@ function flyCameraTo(start_posn, target_vec3, start_time, duration){
     let percentage = Math.min(1 - (end_time - Date.now())/duration, 1)
     console.log(percentage)
     camera.position.lerpVectors(start_posn, target_posn_vec3, percentage)
-    camera.lookAt(target_vec3)
+    camera.lookAt(target_vec3.x, target_vec3.y, target_vec3.z)
     //controls.target.set(target_vec3)
-    controls.update()
+    //controls.update()
 }
 
 /*
@@ -58,11 +59,11 @@ global.scene = proto_scene
 
 // Add the camera to the scene.
 scene.add(camera);
+camera.lookAt(0,0,-40);
 
-
-var controls = new OrbitControls(camera, renderer.domElement);
-controls.target = new THREE.Vector3(0, 0, -40);
-controls.update();
+//var controls = new OrbitControls(camera, renderer.domElement);
+//controls.target = new THREE.Vector3(0, 0, -40);
+//controls.update();
 
 //controls.rotateSpeed = .07;
 //controls.enableDamping = true;

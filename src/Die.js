@@ -161,8 +161,9 @@ class Die extends PhysicsBox {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
             const closure = function(){ 
-                SCENE.flyCameraTo(SCENE.camera.position, current_params.pos, start_time, 3000)
+                SCENE.flyCameraTo(SCENE.camera.position.clone(), current_params.pos.clone(), start_time, 3000)
                 }
+            console.log(`final sim position: {current_params.pos}`)
             document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
@@ -175,7 +176,7 @@ class Die extends PhysicsBox {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
             updateCallbacks.push(function(){ 
-                SCENE.flyCameraTo(SCENE.camera.position, die.body.position, start_time, 3000)
+                SCENE.flyCameraTo(SCENE.camera.position.clone(), die.body.position.clone(), start_time, 3000)
                 })
             setTimeout(function(){
             document.dispatchEvent(new Event('simulationReplayFinished'))
