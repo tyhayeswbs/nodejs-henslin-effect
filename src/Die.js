@@ -49,7 +49,7 @@ class Die extends PhysicsBox {
 
     static checkForEscape(){
         die = Die.getInstance()
-        if (window.STATE != "TRIAL IN PROGRESS"){
+        if (STATE != "TRIAL IN PROGRESS"){
             document.removeEventListener('worldUpdate', Die.checkForEscape)
             return
         }
