@@ -49,13 +49,16 @@ class Die extends PhysicsBox {
 
     static checkForEscape(){
         die = Die.getInstance()
-        if (window.STATE != "TRIAL ACTIVE"){
+        if (window.STATE != "TRIAL IN PROGRESS"){
             document.removeEventListener('worldUpdate', Die.checkForEscape)
+            return
         }
-        if (die.home.distanceTo(die.position) > 10){
-                throw "die escaped from dice cup prematurely"
+        if (new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position) > 8){
+               // throw "die escaped from dice cup prematurely"
+               document.removeEventListener('worldUpdate', Die.checkForEscape)
+               alert("An error occured: The die escape from the dice cup premaulturely. Reloading trial...")
+               window.location.reload()
             }
-        }
     }
 
     static simulate_forward(result){
