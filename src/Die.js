@@ -92,7 +92,12 @@ class Die extends PhysicsBox {
 
         let timeout_counter = 5*30 //5 seconds should be enough
 
-        while (!(clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6))){
+        while (!(clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6) && (clone_die.position.y < -8))){
+       
+            if (clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6)){
+                console.log("would have been a problem without the y constraint")
+            }
+
 
               let params = {"time": simulationStartWorldTime + elapsed, "pos" : new CANNON.Vec3().copy(clone_die.position), "rot": new THREE.Quaternion().copy(clone_die.quaternion), 
                 "velocity": new CANNON.Vec3().copy(clone_die.velocity), 
@@ -132,9 +137,11 @@ class Die extends PhysicsBox {
                     return false
             return true
             }
-            if ((len > 3) && (simulation[len - 1].pos.vsub(simulation[len - 3].pos).almostZero(1e-3) && quaternionDifferenceAlmostZero(simulation[len - 1].rot,simulation[len - 3].rot, 1e-3)))
-            {
-                break;
+            if ( clone_die.position.y < -8) {
+                if ((len > 3) && (simulation[len - 1].pos.vsub(simulation[len - 3].pos).almostZero(1e-3) && quaternionDifferenceAlmostZero(simulation[len - 1].rot,simulation[len - 3].rot, 1e-3)))
+                {
+                    break;
+                }
             }
         }
         Die.set_up_face(Die.get_up_face(clone_die), result)
@@ -147,6 +154,7 @@ class Die extends PhysicsBox {
         let worldtime = e.detail.worldtime;
     
         let current_params;
+        console.log(`simulation length: ${simulation.length}`)
         if (window.simulation.length > 1)
         {
             current_params = simulation.shift()
@@ -176,7 +184,7 @@ class Die extends PhysicsBox {
             const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), current_params.pos.clone(), start_time, 3000)
                 }
-            console.log(`final sim position: {current_params.pos}`)
+            console.log(`final sim position: ${current_params.pos}`)
             document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
@@ -188,11 +196,14 @@ class Die extends PhysicsBox {
         {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
-            updateCallbacks.push(function(){ 
+            const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), die.body.position.clone(), start_time, 3000)
-                })
+                }
+            console.log(`final sim position: ${die.body.position}`)
+            document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
-            document.dispatchEvent(new Event('simulationReplayFinished'))
+                document.dispatchEvent(new Event('simulationReplayFinished'))
+                document.removeEventListener('worldUpdate', closure)
             }, 3000)
             console.log('simulationReplayFinished dispatched')
         }

@@ -10,10 +10,13 @@ global.TRIAL_END_TIME = 500
 global.STATE = "LOADING"
 
 function attachTouchStart(){
-  document.addEventListener("touchstart", startShaking);
-  //document.addEventListener("deviceorientation", leftFlatFromTable);
-  console.log("Touch Start added")
+  if (STATE == "LOADING"){
+      document.addEventListener("touchstart", startShaking);
+      console.log("Touch Start added")
+      STATE = "AWAITING TOUCH START"
+  }
 }
+
 
 
 function getPermission() {
@@ -107,19 +110,13 @@ function randInt(n) {
 }
 
 function startShaking() {
-  //window.removeEventListener("deviceorientation", leftFlatFromTable)
   document.removeEventListener("touchstart", startShaking);
   document.addEventListener('worldUpdate', Die.checkForEscape)
   STATE = "TRIAL IN PROGRESS"
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
-  //document.addEventListener("touchstart", stopShaking);
     
-  //window.addEventListener("deviceorientation", enterFlatFromTable);
   if (!sounds_attached) {
-    //for (let sound of ASSETS.sounds){
-    //    sound.context.resume()
-    //}
     die.body.addEventListener("collide", function (e) {
      if (Math.abs(e.contact.getImpactVelocityAlongNormal()) > 10)
       {
@@ -146,7 +143,6 @@ function longBleep(){
 function stopShaking() {
   window.removeEventListener("devicemotion", readAccel);
   document.removeEventListener('worldUpdate', Die.checkForEscape)
-  //document.addEventListener("touchstart", startShaking);
   window.removeEventListener("deviceorientation", enterFlatFromTable)
   document.addEventListener('simulationReplayFinished', trialEnd);
   // body.body.velocity = new CANNON.Vec3(0, 0, 0);
@@ -220,8 +216,6 @@ function leftFlatFromTable(e){
         else if (STATE == "TRIAL ENDED")
            {
             die.body.type = CANNON.Body.STATIC;
-            //startShaking()
-            //new_trial()
             }
         window.removeEventListener("deviceorientation", leftFlatFromTable)
         window.addEventListener("deviceorientation", enterFlatFromTable)
@@ -244,15 +238,6 @@ function reset_die_needs_refactor(){
   die.body.position = home_position
   console.log("resetting die position")*/
   die.resetLocation()
-}
-
-function new_trial(){
-    STATE = "LOADING"
-    DiceCup.create()
-    setTimeout(reset_die_needs_refactor, 300)
-    setTimeout(startShaking, 500);
-    console.log("running new_trial")
-    die.body.type = CANNON.Body.DYNAMIC
 }
 
 assetsLoadedCallbacks.push(getPermission)
