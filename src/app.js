@@ -31,6 +31,7 @@ let initializeDie = function(){
       ASSETS.dieMaterial
     );
 //    die.body.mass = 1;
+    window.dispatchEvent(new Event('dieReady'))
     
 }
 

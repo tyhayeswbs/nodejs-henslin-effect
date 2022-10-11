@@ -18,6 +18,20 @@ function attachTouchStart(){
 }
 
 
+function awaitDieOrStartShaking(){
+
+    try {
+        if (die){
+            startShaking()
+        }
+    }
+    catch (ReferenceError)
+    {
+        window.addEventListener('dieReady', startShaking)
+    }
+
+}
+
 
 function getPermission() {
     var need_orientation_permission;
@@ -43,7 +57,7 @@ function getPermission() {
               if (need_orientation_permission){
                 DeviceOrientationEvent.requestPermission().then((response) => {
                   if (response === "granted") {
-                      attachTouchStart()
+                    awaitDieOrStartShaking()
                   }
                   else
                   {
@@ -51,7 +65,7 @@ function getPermission() {
                   }
                 });
               } else {
-              attachTouchStart()
+                awaitDieOrStartShaking()
               }
           }
           else
@@ -67,7 +81,7 @@ function getPermission() {
     }
     else {
       // non iOS 13+
-      attachTouchStart()
+        awaitDieOrStartShaking()
     }
 }
 
