@@ -4,6 +4,7 @@ const THREE = require("three")
 const SCENE = require("./Scene.js")
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
+const SETTINGS = require("./Settings.js")
 
 
 class DieSingleton extends PhysicsBox {
@@ -48,11 +49,16 @@ class Die extends PhysicsBox {
     }
 
     static checkForEscape(){
+        console.log("check for escape running")
         die = Die.getInstance()
         if (STATE != "TRIAL IN PROGRESS"){
             document.removeEventListener('worldUpdate', Die.checkForEscape)
+            console.log("removing check for escape because STATE is wrong")
             return
         }
+        console.log(die.body.position)
+        console.log(die.home)
+        console.log(new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position))
         if (new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position) > 8){
                // throw "die escaped from dice cup prematurely"
                document.removeEventListener('worldUpdate', Die.checkForEscape)
@@ -105,11 +111,12 @@ class Die extends PhysicsBox {
                 }
 
 
-            elapsed += 1000/30;
+            elapsed += (1000*SETTINGS.simulation_scale)/30;
             world.step(33/1000, 20);
 
             simulation.push(params) //  each triple here is time elapsed in seconds, Vec3, Vec3
 
+                console.log(params)
             //just in case the die escapes bounds and we're stuck in an infinite loop
             if (new CANNON.Vec3(0,0,0).distanceTo(clone_die.position) > 60){
                 throw "die out of bounds"
@@ -152,18 +159,24 @@ class Die extends PhysicsBox {
 
     static step_recorded_simulation(e){
         let worldtime = e.detail.worldtime;
+        if (!window.last_params){
+            window.last_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
+        }
     
-        let current_params;
+        let current_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
+        // let current_poarams
         console.log(`simulation length: ${simulation.length}`)
         if (window.simulation.length > 1)
         {
-            current_params = simulation.shift()
+            //current_params = simulation.shift()
             while (simulation[0]["time"] < worldtime && window.simulation.length > 1) 
             {
             current_params = simulation.shift()
             }
-
-            let lerp_amount = invLerp(current_params.time, worldtime, simulation[0].time)
+            //let lerp_amount = invLerp(current_params.time, worldtime, simulation[0].time)
+            let lerp_amount = invLerp(last_params.time, worldtime, current_params.time)
+            console.log(`lerp aroumt: ${lerp_amount}`)
+            last_params = current_params
 
             let new_rot = new THREE.Quaternion()
             new_rot.copy(current_params.rot)

@@ -2,6 +2,7 @@ const CANNON = require("cannon-es")
 const THREE = require("three")
 const ASSETS = require("./AssetLibrary.js")
 const {Die} = require("./Die.js")
+const SETTINGS = require("./Settings.js")
 
 global.isIOS = /iPad|iPhone|iPod/.test(navigator.platform)
 global.FLAT_TO_TABLE_THRESHOLD = 5
@@ -115,7 +116,7 @@ function impartAcceleration(x, y, z, interval) {
   die.body.wakeUp();
 
     let duration = isIOS ? interval * 10 :  (interval / 100); //iOs reports in seconds (eg 0.0167) but android in milliseconds (16) 50 is fairly good
-    let acc = new CANNON.Vec3(x * duration, y * duration, z * duration);
+    let acc = new CANNON.Vec3(x * duration * SETTINGS.acceleration_scale, y * duration * SETTINGS.acceleration_scale, z * duration * SETTINGS.acceleration_scale);
     die.body.applyImpulse(acc);
 }
 
@@ -125,8 +126,8 @@ function randInt(n) {
 
 function startShaking() {
   document.removeEventListener("touchstart", startShaking);
-  document.addEventListener('worldUpdate', Die.checkForEscape)
   STATE = "TRIAL IN PROGRESS"
+  document.addEventListener('worldUpdate', Die.checkForEscape)
   window.readings = [];
   window.addEventListener("devicemotion", readAccel);
     
