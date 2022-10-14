@@ -159,24 +159,23 @@ class Die extends PhysicsBox {
 
     static step_recorded_simulation(e){
         let worldtime = e.detail.worldtime;
-        if (!window.last_params){
-            window.last_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
-        }
     
-        let current_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
-        // let current_poarams
+        if (typeof current_params == 'undefined'){
+        window.current_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
+        }
         console.log(`simulation length: ${simulation.length}`)
         if (window.simulation.length > 1)
         {
+            let next_params = simulation[0]
             //current_params = simulation.shift()
-            while (simulation[0]["time"] < worldtime && window.simulation.length > 1) 
+            while (next_params.time < worldtime && window.simulation.length > 1) 
             {
             current_params = simulation.shift()
+            next_params = simulation[0]
             }
             //let lerp_amount = invLerp(current_params.time, worldtime, simulation[0].time)
-            let lerp_amount = invLerp(last_params.time, worldtime, current_params.time)
+            let lerp_amount = invLerp(current_params.time, worldtime, next_params.time)
             console.log(`lerp aroumt: ${lerp_amount}`)
-            last_params = current_params
 
             let new_rot = new THREE.Quaternion()
             new_rot.copy(current_params.rot)
