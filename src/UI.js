@@ -14,12 +14,12 @@ function domReadyFunctions(){
         }   
         for (let sound of ASSETS.sounds){
             sound.context.resume()
-            console.log("resumed audio context for sounds")
+            //console.log("resumed audio context for sounds")
         }
         try {
         ASSETS.shortBleep.context.resume()
         ASSETS.longBleep.context.resume()
-        console.log("resumed audio context")
+        //console.log("resumed audio context")
         }
         catch (e){
            alert(e)

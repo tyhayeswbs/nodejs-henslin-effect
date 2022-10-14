@@ -16,6 +16,9 @@ global.sounds_attached = false;
 
 DiceCup.create()
 
+
+window.addEventListener("dieReady", function(){ die.body.angularVelocity.set(Math.random(), Math.random(), Math.random())})
+
 let initializeDie = function(){
     console.log("Die Initializing")
 

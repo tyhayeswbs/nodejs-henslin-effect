@@ -21,7 +21,7 @@ class PhysicsBox {
     this.mesh = new THREE.Mesh(cubeGeometry, material);
 
     this.mesh.castShadow = true;
-    console.log(position)
+    //console.log(position)
     this.mesh.position.copy(position);
     this.mesh.scale.set(width, height, depth);
 

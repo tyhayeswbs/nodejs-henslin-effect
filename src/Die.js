@@ -14,7 +14,6 @@ class DieSingleton extends PhysicsBox {
         super(2,2,2, initial_location, scene, world, updateCallbacks, materials)
         this.body.mass = 1;
         this.home = initial_location
-        this.body.angularVelocity.set(Math.random(), Math.random(), Math.random())
     }
 
     resetLocation(){
@@ -37,6 +36,8 @@ class Die extends PhysicsBox {
         if (!Die.instance){
             Die.instance = new DieSingleton(initial_location, scene, world, updateCallbacks, materials)
             Die.initial_location = initial_location
+            //Die.instance.body.angularVelocity.set(Math.random(), Math.random(), Math.random())
+            //console.log(Die.instance.body.angularVelocity)
         }
     return Die.instance
     }
@@ -50,16 +51,16 @@ class Die extends PhysicsBox {
     }
 
     static checkForEscape(){
-        console.log("check for escape running")
+        //console.log("check for escape running")
         die = Die.getInstance()
         if (STATE != "TRIAL IN PROGRESS"){
             document.removeEventListener('worldUpdate', Die.checkForEscape)
-            console.log("removing check for escape because STATE is wrong")
+            //console.log("removing check for escape because STATE is wrong")
             return
         }
-        console.log(die.body.position)
-        console.log(die.home)
-        console.log(new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position))
+        //console.log(die.body.position)
+        //console.log(die.home)
+        //console.log(new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position))
         if (new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position) > 8){
                // throw "die escaped from dice cup prematurely"
                document.removeEventListener('worldUpdate', Die.checkForEscape)
@@ -101,9 +102,9 @@ class Die extends PhysicsBox {
 
         while (!(clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6) && (clone_die.position.y < -8))){
        
-            if (clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6)){
+            /*if (clone_die.velocity.almostZero(1e-6) && clone_die.angularVelocity.almostZero(1e-6)){
                 console.log("would have been a problem without the y constraint")
-            }
+            }*/
 
 
               let params = {"time": simulationStartWorldTime + elapsed, "pos" : new CANNON.Vec3().copy(clone_die.position), "rot": new THREE.Quaternion().copy(clone_die.quaternion), 
@@ -117,7 +118,7 @@ class Die extends PhysicsBox {
 
             simulation.push(params) //  each triple here is time elapsed in seconds, Vec3, Vec3
 
-                console.log(params)
+            //    console.log(params)
             //just in case the die escapes bounds and we're stuck in an infinite loop
             if (new CANNON.Vec3(0,0,0).distanceTo(clone_die.position) > 60){
                 throw "die out of bounds"

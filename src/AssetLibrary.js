@@ -5,7 +5,6 @@ const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const audioLoader = new THREE.AudioLoader(loadingManager);
 
-console.log("stuff happening in AssetLibrary")
 if (!window.staticRoot)
 {
 window.staticRoot = ""
@@ -38,7 +37,7 @@ for (let i = 1; i < 7; i++){
                             map: textureLoader.load(`${window.staticRoot}img/${i}.png`),
                             side: THREE.DoubleSide
                           }))
-    console.log(dieFaceMaterials)
+    //console.log(dieFaceMaterials)
 }
 /*
 const dieMaterialx1 = [

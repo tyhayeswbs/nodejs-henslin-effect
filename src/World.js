@@ -49,7 +49,7 @@ var dieBackboardContactMaterial = new CANNON.ContactMaterial(
   }
 );
 
-world.addContactMaterial(dieBaiseContactMaterial);
+world.addContactMaterial(dieBackboardContactMaterial);
 
 const cannonDebugger = new CannonDebugger(scene, world, {
   // options...
