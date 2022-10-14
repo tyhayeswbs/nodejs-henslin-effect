@@ -14,6 +14,7 @@ class DieSingleton extends PhysicsBox {
         super(2,2,2, initial_location, scene, world, updateCallbacks, materials)
         this.body.mass = 1;
         this.home = initial_location
+        this.body.angularVelocity.set(Math.random(), Math.random(), Math.random())
     }
 
     resetLocation(){
