@@ -1,5 +1,6 @@
 const CANNON = require("cannon-es");
 const THREE = require("three");
+const SETTINGS = require("./Settings.js")
 
 const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager);
@@ -144,14 +145,21 @@ const lidMaterial = new THREE.MeshPhysicalMaterial({
   metalness: 0
 });
 
-const lidMaterials = [
-  lidMaterial,
-  lidMaterial,
-  lidMaterial,
-  lidMaterial,
-  lidMaterial,
-  lidMaterial
-];
+
+const semiOpaqueLidMaterial = new THREE.MeshPhysicalMaterial({
+  transmission: 0.55,
+  roughness: 0.36,
+  metalness: 0,
+  ior: 1.5
+});
+
+function getLidMaterials(){
+    let mats = Array(6)
+    mats.fill(SETTINGS.opaque_lid ? semiOpaqueLidMaterial : lidMaterial)
+    return mats
+}
+
+const lidMaterials = getLidMaterials()
 
 
 var sounds = []
