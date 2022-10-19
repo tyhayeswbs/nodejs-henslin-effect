@@ -51,6 +51,17 @@ table.rightboard = new PhysicsBox(
 )
 
 
+table.frontboard = new PhysicsBox(
+  50,
+  15,
+  2,
+  { x: 0, y: -2.5, z: -22.5 },
+  scene,
+  world,
+  updateCallbacks,
+  new THREE.MeshLambertMaterial({color: "brown", transparent: true, opacity: 0}) // TODO: Should probably just remove this 
+)
+
 for (const [key, val] of Object.entries(table)){
     val.body.type = CANNON.Body.STATIC;
     val.body.material = ASSETS.baisePhysicsMaterial

@@ -92,6 +92,17 @@ DiceCup.destroy = function(){
 
 }
 
+DiceCup.phaseOut = function(){
+
+    world.removeBody(DiceCup.wallRight.body)
+    world.removeBody(DiceCup.wallLeft.body)
+    world.removeBody(DiceCup.wallTop.body)
+    world.removeBody(DiceCup.wallBottom.body)
+    world.removeBody(DiceCup.ground.body)
+    world.removeBody(DiceCup.lid.body)
+
+}
+
 
 
 module.exports = {DiceCup}

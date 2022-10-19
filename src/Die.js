@@ -71,7 +71,13 @@ class Die extends PhysicsBox {
 
     static simulate_forward(result){
         die = Die.getInstance()
-
+        let vel;
+        if (SETTINGS.use_dv_for_sim){
+            let average_shake = window.readings.map( (item) => parseFloat(item.w)).reduce( (prev, cur) => prev + cur) / window.readings.length
+            vel = new CANNON.Vec3( 0 , 0, average_shake * SETTINGS.dv_scale);
+            console.log("using dv for sim. sim initial velocity: ")
+            console.log(vel)
+        }
         let clone_die = new CANNON.Body({
             mass: die.body.mass,
             position: new CANNON.Vec3().copy(die.body.position),
@@ -80,7 +86,7 @@ class Die extends PhysicsBox {
             canSleep: false,
             friction: die.body.friction,
             restitution: die.body.restitution,
-            velocity: new CANNON.Vec3().copy(die.body.velocity),
+            velocity: SETTINGS.use_dv_for_sim ? vel : new CANNON.Vec3().copy(die.body.velocity),
             angularVelocity: new CANNON.Vec3().copy(die.body.angularVelocity),
             type: CANNON.Body.DYNAMIC,
         })
@@ -91,8 +97,10 @@ class Die extends PhysicsBox {
         die.body.type = CANNON.Body.STATIC;
         const canonicalBody = die.body
         world.removeBody(canonicalBody)
-
+        DiceCup.phaseOut() //removes all the dice cup bodies
         world.addBody(clone_die)
+
+        let i = 0
 
         let simulationStartWorldTime = Date.now()
         window.simulation = []
@@ -160,24 +168,22 @@ class Die extends PhysicsBox {
     }
 
     static step_recorded_simulation(e){
-        let worldtime = e.detail.worldtime;
+        let worldtime = e.detail.worldtime - window.simulation_offset;
     
         if (typeof current_params == 'undefined'){
-        window.current_params = {"time": Date.now(), "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
+        window.current_params = {"time": worldtime, "pos" : new CANNON.Vec3().copy(die.body.position), "rot": new THREE.Quaternion().copy(die.body.quaternion) }
         }
-        console.log(`simulation length: ${simulation.length}`)
+        //console.log(`simulation length: ${simulation.length}`)
         if (window.simulation.length > 1)
         {
             let next_params = simulation[0]
-            //current_params = simulation.shift()
             while (next_params.time < worldtime && window.simulation.length > 1) 
             {
             current_params = simulation.shift()
             next_params = simulation[0]
             }
-            //let lerp_amount = invLerp(current_params.time, worldtime, simulation[0].time)
             let lerp_amount = invLerp(current_params.time, worldtime, next_params.time)
-            console.log(`lerp aroumt: ${lerp_amount}`)
+            //console.log(`lerp aroumt: ${lerp_amount}`)
 
             let new_rot = new THREE.Quaternion()
             new_rot.copy(current_params.rot)
@@ -226,7 +232,9 @@ class Die extends PhysicsBox {
 
     static run_recorded_simulation(){
         console.log("adding event listener")
+        window.simulation_offset = Date.now() - window.simulation[0].time
         document.addEventListener('worldUpdate', Die.step_recorded_simulation)
+
     }
 
 

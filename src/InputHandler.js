@@ -164,8 +164,6 @@ function stopShaking() {
   //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 
   die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
-  DiceCup.destroy();
-  gravityOn();
 
   liveSend(window.readings)
 
@@ -176,16 +174,20 @@ function stopShaking() {
 
 function serverResponded(){
   document.removeEventListener("serverTrialCoda", serverResponded)
+  console.log("server_responded")
   try {
+      gravityOn();
       Die.simulate_forward(window.result)
     }
   catch (err){
        alert("An error occurred:" + err + ".  Reloading trial...")
        window.location.reload()
    }
-  //delete window.randomResult
+  window.alert("Click here to see the results of your roll")
+  
   die.body.type = CANNON.Body.STATIC;
   STATE = "SIMULATION REPLAYING"
+  DiceCup.destroy();
   Die.run_recorded_simulation()
 }
 
