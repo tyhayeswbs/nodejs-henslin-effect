@@ -14,6 +14,10 @@ class DieSingleton extends PhysicsBox {
         super(2,2,2, initial_location, scene, world, updateCallbacks, materials)
         this.body.mass = 1;
         this.home = initial_location
+        this.body.linearDamping = 0
+        this.body.angularDamping = 0
+        this.body.updateMassProperties()
+        this.body.aabbNeedsUpdate = true;
     }
 
     resetLocation(){
