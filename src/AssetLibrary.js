@@ -40,6 +40,18 @@ for (let i = 1; i < 7; i++){
                           }))
     //console.log(dieFaceMaterials)
 }
+
+const baiseMaterial = new THREE.MeshLambertMaterial({
+  color: new THREE.Color("#0da026"),
+  side: THREE.DoubleSide
+})
+
+const woodMaterial = new THREE.MeshLambertMaterial({
+  color: new THREE.Color("#480f0f"),
+  side: THREE.FrontSide
+})
+const feltTexture = textureLoader.load(`${window.staticRoot}img/felt texture.jpg`, function(texture){ console.log("felt texture loaded"); baiseMaterial.map = texture; baiseMaterial.needsUpdate = true;})
+const woodTexture = textureLoader.load(`${window.staticRoot}img/wood texture.jpg`, function(texture){ woodMaterial.map = texture; woodMaterial.needsUpdate = true;})
 /*
 const dieMaterialx1 = [
   new THREE.MeshLambertMaterial({
@@ -128,16 +140,6 @@ const groundMaterials = [
   groundMaterial
 ];
 
-const baiseMaterial = new THREE.MeshLambertMaterial({
-  color: new THREE.Color("#0da026"),
-  side: THREE.DoubleSide
-})
-
-
-const woodMaterial = new THREE.MeshLambertMaterial({
-  color: new THREE.Color("#480f0f"),
-  side: THREE.DoubleSide
-})
 
 const lidMaterial = new THREE.MeshPhysicalMaterial({
   transmission: 1,
@@ -195,13 +197,14 @@ const baisePhysicsMaterial = new CANNON.Material("baiseMaterial")
 const backboardPhysicsMaterial = new CANNON.Material("backboardMaterial")
 
 
+
 module.exports = {groundMaterial, groundMaterials, 
                   lidMaterial, lidMaterials,
                   dieMaterial, sounds,
                   defaultPhysicsMaterial,
                   baisePhysicsMaterial,
                   backboardPhysicsMaterial,
-                  baiseMaterial,
+                  baiseMaterial, woodMaterial,
                   dieMaterialx1, dieMaterialx2, dieMaterialx3,
                   dieMaterialx4, dieMaterialx5, dieMaterialx6,
                   dieFaceMaterials,

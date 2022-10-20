@@ -7,7 +7,7 @@ const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 
 // Set some camera attributes.
-const VIEW_ANGLE = 45;
+const VIEW_ANGLE = 60//45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
@@ -76,12 +76,12 @@ renderer.setSize(WIDTH, HEIGHT);
 container.appendChild(renderer.domElement);
 
 // create a point light
-const pointLight = new THREE.PointLight(0xffffff);
+const pointLight = new THREE.PointLight(0xffffff, 1.5);
 
 // set its position
 pointLight.position.x = 10;
 pointLight.position.y = 40;
-pointLight.position.z = 130;
+pointLight.position.z = 50 // 130;
 
 // add to the scene
 scene.add(pointLight);
@@ -89,12 +89,12 @@ scene.add(pointLight);
 // create a point light inside cup
 
 // create a point light
-const pointLight2 = new THREE.PointLight(0xffffff);
+const pointLight2 = new THREE.PointLight(0xffffff,1.5);
 
 // set its position
 pointLight2.position.x = 0;
 pointLight2.position.y = 20;
-pointLight2.position.z = -300;
+pointLight2.position.z = -30;
 
 // add to the scene
 scene.add(pointLight2);
