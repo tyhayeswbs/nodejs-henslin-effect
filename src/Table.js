@@ -81,5 +81,10 @@ for (const [key, val] of Object.entries(table)){
 table.baise.body.material = ASSETS.baisePhysicsMaterial
 
 
+table.baise.mesh.receiveShadow = true;
+table.backboard.mesh.castShadow = true;
+table.leftboard.mesh.castShadow = true;
+table.rightboard.mesh.castShadow = true;
+
 module.exports = {table}
 

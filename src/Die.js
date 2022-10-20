@@ -18,6 +18,7 @@ class DieSingleton extends PhysicsBox {
         this.body.angularDamping = 0
         this.body.updateMassProperties()
         this.body.aabbNeedsUpdate = true;
+        this.mesh.castShadow = true;
     }
 
     resetLocation(){
@@ -205,14 +206,14 @@ class Die extends PhysicsBox {
             die.body.position.copy(current_params.pos)
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
-            const closure = function(){ 
+            /*const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), current_params.pos.clone(), start_time, 3000)
                 }
             console.log(`final sim position: ${current_params.pos}`)
-            document.addEventListener('worldUpdate', closure)
+            document.addEventListener('worldUpdate', closure)*/
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
-                document.removeEventListener('worldUpdate', closure)
+                //document.removeEventListener('worldUpdate', closure)
             }, 3000)
             console.log('simulationReplayFinished dispatched')
         }
@@ -220,14 +221,14 @@ class Die extends PhysicsBox {
         {
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
-            const closure = function(){ 
+            /*const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), die.body.position.clone(), start_time, 3000)
                 }
             console.log(`final sim position: ${die.body.position}`)
-            document.addEventListener('worldUpdate', closure)
+            document.addEventListener('worldUpdate', closure)*/
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
-                document.removeEventListener('worldUpdate', closure)
+                //document.removeEventListener('worldUpdate', closure)
             }, 3000)
             console.log('simulationReplayFinished dispatched')
         }

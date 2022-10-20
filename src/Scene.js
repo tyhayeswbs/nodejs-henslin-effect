@@ -18,6 +18,7 @@ const container = document.querySelector("#app");
 // Create a WebGL renderer, camera
 // and a scene
 const renderer = new THREE.WebGLRenderer();
+renderer.shadowMap.enabled = true;
 const camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
 window.camera = camera;
@@ -58,6 +59,7 @@ const proto_scene = new THREE.Scene();
 global.scene = proto_scene
 
 // Add the camera to the scene.
+camera.position.set(0,10,0)
 scene.add(camera);
 camera.lookAt(0,0,-40);
 
@@ -94,7 +96,8 @@ const pointLight2 = new THREE.PointLight(0xffffff,1.5);
 // set its position
 pointLight2.position.x = 0;
 pointLight2.position.y = 20;
-pointLight2.position.z = -30;
+pointLight2.position.z = -50;
+pointLight2.castShadow = true;
 
 // add to the scene
 scene.add(pointLight2);
