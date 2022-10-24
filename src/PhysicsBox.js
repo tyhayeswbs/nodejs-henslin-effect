@@ -39,8 +39,10 @@ class PhysicsBox {
       canSleep: true,
       sleepSpeedLimit: 1,
       sleepTimeLimit: 1,
-      friction: 0.6,
-      restitution: 0.0
+      friction: 0.0,
+      restitution: 1.0,
+      linearDamping: 0.0,
+      angularDamping: 0.0
     });
 
     this.body.position.copy(this.mesh.position);

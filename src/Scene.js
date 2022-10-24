@@ -1,4 +1,5 @@
 const THREE = require("three");
+const ASSETS = require("./AssetLibrary.js")
 //const TWEENJS = require("tween.js")
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
@@ -78,6 +79,7 @@ renderer.setSize(WIDTH, HEIGHT);
 container.appendChild(renderer.domElement);
 
 // create a point light
+/*
 const pointLight = new THREE.PointLight(0xffffff, 1.5);
 
 // set its position
@@ -87,6 +89,9 @@ pointLight.position.z = 50 // 130;
 
 // add to the scene
 scene.add(pointLight);
+*/
+const ambientLight = new THREE.AmbientLight( 0xffffff, 1)
+scene.add(ambientLight)
 
 // create a point light inside cup
 
@@ -95,12 +100,18 @@ const pointLight2 = new THREE.PointLight(0xffffff,1.5);
 
 // set its position
 pointLight2.position.x = 0;
-pointLight2.position.y = 20;
-pointLight2.position.z = -50;
+pointLight2.position.y = 30;
+pointLight2.position.z = -60;
 pointLight2.castShadow = true;
 
 // add to the scene
 scene.add(pointLight2);
+
+const skyboxMesh = new THREE.SphereGeometry(3000, 32, 16)
+const skybox = new THREE.Mesh(skyboxMesh, ASSETS.skyboxMaterial)
+skybox.rotateY(-Math.PI/2)
+scene.add(skybox)
+window.skybox = skybox
 
 module.exports = {scene, renderer, camera, flyCameraTo}
 

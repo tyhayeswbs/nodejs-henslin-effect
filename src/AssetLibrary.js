@@ -34,9 +34,11 @@ const dieFaceMaterials = [undefined];
 
 for (let i = 1; i < 7; i++){
 
-    dieFaceMaterials.push(new THREE.MeshLambertMaterial({
+    dieFaceMaterials.push(new THREE.MeshPhongMaterial({
                             map: textureLoader.load(`${window.staticRoot}img/${i}.png`),
-                            side: THREE.DoubleSide
+                            side: THREE.DoubleSide,
+                            //transparent: true,
+                            //opacity: 0.8
                           }))
     //console.log(dieFaceMaterials)
 }
@@ -50,8 +52,12 @@ const woodMaterial = new THREE.MeshLambertMaterial({
   color: new THREE.Color("#480f0f"),
   side: THREE.FrontSide
 })
-const feltTexture = textureLoader.load(`${window.staticRoot}img/felt texture.jpg`, function(texture){ console.log("felt texture loaded"); baiseMaterial.map = texture; baiseMaterial.needsUpdate = true;})
+const feltTexture = textureLoader.load(`${window.staticRoot}img/felt texture.jpg`, function(texture){  baiseMaterial.map = texture; baiseMaterial.needsUpdate = true;})
 const woodTexture = textureLoader.load(`${window.staticRoot}img/wood texture.jpg`, function(texture){ woodMaterial.map = texture; woodMaterial.needsUpdate = true;})
+
+const skyboxMaterial = new THREE.MeshBasicMaterial({color: new THREE.Color("#FFCCCC"),  side: THREE.BackSide})
+const skyboxTexture = textureLoader.load(`${window.staticRoot}img/skybox1.jpg`, function(texture){ console.log("skybox texture loaded"); skyboxMaterial.map = texture; skyboxMaterial.needsUpdate = true;})
+
 /*
 const dieMaterialx1 = [
   new THREE.MeshLambertMaterial({
@@ -199,6 +205,7 @@ const backboardPhysicsMaterial = new CANNON.Material("backboardMaterial")
 
 
 module.exports = {groundMaterial, groundMaterials, 
+                  skyboxMaterial, skyboxTexture,
                   lidMaterial, lidMaterials,
                   dieMaterial, sounds,
                   defaultPhysicsMaterial,
@@ -210,5 +217,4 @@ module.exports = {groundMaterial, groundMaterials,
                   dieFaceMaterials,
                   shortBleep,
                   longBleep,
-
                 }

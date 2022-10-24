@@ -71,7 +71,7 @@ for (const [key, val] of Object.entries(table)){
     val.body.type = CANNON.Body.STATIC;
 
     //according to cannon js maintainer, this is necessary when changing a body to static
-    // see https://github.com/schteppe/cannon.js/issues/317
+    // see https://github.com/schteppe/cannon.js/issues/317#issuecomment-262710586
     val.body.mass = 0
     val.body.updateMassProperties()
     val.body.aabbNeedsUpdate = true;
