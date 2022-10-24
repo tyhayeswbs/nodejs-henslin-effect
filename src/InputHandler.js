@@ -118,6 +118,7 @@ function impartAcceleration(x, y, z, interval) {
     let duration = isIOS ? interval * 10 :  (interval / 100); //iOs reports in seconds (eg 0.0167) but android in milliseconds (16) 50 is fairly good
     let acc = new CANNON.Vec3(x * duration * SETTINGS.acceleration_scale, y * duration * SETTINGS.acceleration_scale, z * duration * SETTINGS.acceleration_scale);
     die.body.applyImpulse(acc);
+    
 }
 
 function randInt(n) {
@@ -160,8 +161,6 @@ function stopShaking() {
   document.removeEventListener('worldUpdate', Die.checkForEscape)
   window.removeEventListener("deviceorientation", enterFlatFromTable)
   document.addEventListener('simulationReplayFinished', trialEnd);
-  // body.body.velocity = new CANNON.Vec3(0, 0, 0);
-  //die.body.velocity = new CANNON.Vec3({x: 0, y: 0, z: -die.body.velocity.length()});
 
   die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
 
@@ -175,14 +174,14 @@ function stopShaking() {
 function serverResponded(){
   document.removeEventListener("serverTrialCoda", serverResponded)
   console.log("server_responded")
-  try {
+  //try {
       gravityOn();
       Die.simulate_forward(window.result)
-    }
-  catch (err){
-       alert("An error occurred:" + err + ".  Reloading trial...")
-       window.location.reload()
-   }
+  //  }
+  //catch (err){
+  //     alert("An error occurred:" + err + ".  Reloading trial...")
+  //     window.location.reload()
+  // }
   window.alert("Click here to see the results of your roll")
   
   die.body.type = CANNON.Body.STATIC;

@@ -78,24 +78,26 @@ class Die extends PhysicsBox {
         let vel;
         if (SETTINGS.use_dv_for_sim){
             let average_shake = window.readings.map( (item) => parseFloat(item.w)).reduce( (prev, cur) => prev + cur) / window.readings.length
-            vel = new CANNON.Vec3( 0 , 0, average_shake * SETTINGS.dv_scale);
-            console.log("using dv for sim. sim initial velocity: ")
+            //vel = new CANNON.Vec3( 0 , 0, average_shake * SETTINGS.dv_scale);
+            vel = new CANNON.Vec3(0,0, (window.min_launch_velocity ?? SETTINGS.min_launch_velocity) - average_shake*SETTINGS.dv_scale)
+            console.log(`using dv ${average_shake} for sim. sim initial velocity: `)
             console.log(vel)
         }
         let clone_die = new CANNON.Body({
             mass: die.body.mass,
-            position: new CANNON.Vec3().copy(die.body.position),
+            position: SETTINGS.use_default_release_params ? new CANNON.Vec3(die.home.x, die.home.y, die.home.z) :  new CANNON.Vec3().copy(die.body.position),
             shape:  new CANNON.Box(die.body.shapes[0].halfExtents),
             material: die.body.material,
             canSleep: false,
             friction: die.body.friction,
             restitution: die.body.restitution,
             velocity: SETTINGS.use_dv_for_sim ? vel : new CANNON.Vec3().copy(die.body.velocity),
-            angularVelocity: new CANNON.Vec3().copy(die.body.angularVelocity),
+            angularVelocity: SETTINGS.use_default_release_params ? new CANNON.Vec3(1,1,1) : new CANNON.Vec3().copy(die.body.angularVelocity),
+            quaternion: SETTINGS.use_default_release_params ? new CANNON.Quaternion(0,0,0,1) : new CANNON.Quaternion().copy(die.body.quaternion),
             type: CANNON.Body.DYNAMIC,
         })
 
-        clone_die.quaternion.copy(die.body.quaternion)
+        //clone_die.quaternion.copy(die.body.quaternion)
 
 
         die.body.type = CANNON.Body.STATIC;
