@@ -7,9 +7,9 @@ let table = {}
 
 
 table.baise = new PhysicsBox(
-  50,
-  2,
   25,
+  2,
+  50,
   { x: 0, y: -10, z: -30 },
   scene,
   world,
@@ -19,10 +19,10 @@ table.baise = new PhysicsBox(
 )
 
 table.backboard = new PhysicsBox(
-  50,
+  25,
   15,
   2,
-  { x: 0, y: -2.5, z: -42.5 },
+  { x: 0, y: -2.5, z: -55 },
   scene,
   world,
   updateCallbacks,
@@ -33,8 +33,8 @@ table.backboard = new PhysicsBox(
 table.leftboard = new PhysicsBox(
   2,
   15,
-  25,
-  { x: -25, y: -2.5, z: -30 },
+  50,
+  { x: -12.5, y: -2.5, z: -30 },
   scene,
   world,
   updateCallbacks,
@@ -45,8 +45,8 @@ table.leftboard = new PhysicsBox(
 table.rightboard = new PhysicsBox(
   2,
   15,
-  25,
-  { x: 25, y: -2.5, z: -30 },
+  50,
+  { x: 12.5, y: -2.5, z: -30 },
   scene,
   world,
   updateCallbacks,
@@ -56,10 +56,10 @@ table.rightboard = new PhysicsBox(
 
 
 table.frontboard = new PhysicsBox(
-  50,
+  25,
   15,
   2,
-  { x: 0, y: -2.5, z: -22.5 },
+  { x: 0, y: -2.5, z: -10 },
   scene,
   world,
   updateCallbacks,
@@ -75,7 +75,7 @@ for (const [key, val] of Object.entries(table)){
     val.body.mass = 0
     val.body.updateMassProperties()
     val.body.aabbNeedsUpdate = true;
-    val.body.material = ASSETS.baisePhysicsMaterial
+    val.body.material = ASSETS.backboardPhysicsMaterial
 }
 
 table.baise.body.material = ASSETS.baisePhysicsMaterial
