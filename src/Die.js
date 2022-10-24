@@ -132,7 +132,7 @@ class Die extends PhysicsBox {
 
             //    console.log(params)
             //just in case the die escapes bounds and we're stuck in an infinite loop
-            if (new CANNON.Vec3(0,0,0).distanceTo(clone_die.position) > 60){
+            if (new CANNON.Vec3(0,0,-30).distanceTo(clone_die.position) > 80){
                 throw "die out of bounds"
             }
 
