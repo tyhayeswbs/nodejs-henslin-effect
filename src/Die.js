@@ -211,6 +211,10 @@ class Die extends PhysicsBox {
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), current_params.pos.clone(), start_time, 3000)
                 }
             console.log(`final sim position: ${current_params.pos}`)
+            try {
+                document.querySelector('[name="final_die_z"]').value = current_params.pos.z
+            }
+            catch { console.log('could not find final sim position field')}
             document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
@@ -226,6 +230,11 @@ class Die extends PhysicsBox {
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), die.body.position.clone(), start_time, 3000)
                 }
             console.log(`final sim position: ${die.body.position}`)
+            try {
+
+                document.querySelector('[name="final_die_z"]').value = current_params.pos.z
+            }
+            catch { console.log('could not find final sim position field')}
             document.addEventListener('worldUpdate', closure)
             setTimeout(function(){
                 document.dispatchEvent(new Event('simulationReplayFinished'))
