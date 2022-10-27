@@ -4,5 +4,7 @@ const dv_scale = window.dv_scale ?? 4 //acceleration_scale * 3
 const opaque_lid = window.opaque_lid ?? false;
 const button_before_play_sim = window.button_before_play_sim ?? true;
 const use_dv_for_sim = window.use_dv_for_sim ?? true;
+const use_textures = window.use_textures ?? false;
+const render_shadows = window.render_shadows ?? false;
 
-module.exports = {simulation_scale, acceleration_scale, opaque_lid, dv_scale, use_dv_for_sim}
+module.exports = {simulation_scale, acceleration_scale, opaque_lid, dv_scale, use_dv_for_sim, use_textures, render_shadows}

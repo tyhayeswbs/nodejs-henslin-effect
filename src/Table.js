@@ -2,6 +2,7 @@ const {PhysicsBox} = require( "./PhysicsBox.js")
 const CANNON = require("cannon-es")
 const THREE = require("three")
 const ASSETS = require("./AssetLibrary.js")
+const SETTINGS = require("./Settings.js")
 
 let table = {}
 
@@ -80,11 +81,11 @@ for (const [key, val] of Object.entries(table)){
 
 table.baise.body.material = ASSETS.baisePhysicsMaterial
 
-
+if (SETTINGS.render_shadows){
 table.baise.mesh.receiveShadow = true;
 table.backboard.mesh.castShadow = true;
 table.leftboard.mesh.castShadow = true;
 table.rightboard.mesh.castShadow = true;
-
+}
 module.exports = {table}
 

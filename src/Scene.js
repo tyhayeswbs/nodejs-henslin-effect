@@ -2,6 +2,7 @@ const THREE = require("three");
 const ASSETS = require("./AssetLibrary.js")
 //const TWEENJS = require("tween.js")
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+const SETTINGS = require("./Settings.js")
 
 
 const WIDTH = window.innerWidth;
@@ -19,7 +20,9 @@ const container = document.querySelector("#app");
 // Create a WebGL renderer, camera
 // and a scene
 const renderer = new THREE.WebGLRenderer();
-renderer.shadowMap.enabled = true;
+if (SETTINGS.render_shadows){
+    renderer.shadowMap.enabled = true;
+}
 const camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
 window.camera = camera;

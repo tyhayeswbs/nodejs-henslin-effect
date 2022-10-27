@@ -52,11 +52,14 @@ const woodMaterial = new THREE.MeshLambertMaterial({
   color: new THREE.Color("#480f0f"),
   side: THREE.FrontSide
 })
-const feltTexture = textureLoader.load(`${window.staticRoot}img/felt texture.jpg`, function(texture){  baiseMaterial.map = texture; baiseMaterial.needsUpdate = true;})
-const woodTexture = textureLoader.load(`${window.staticRoot}img/wood texture.jpg`, function(texture){ woodMaterial.map = texture; woodMaterial.needsUpdate = true;})
 
 const skyboxMaterial = new THREE.MeshBasicMaterial({color: new THREE.Color("#FFCCCC"),  side: THREE.BackSide})
-const skyboxTexture = textureLoader.load(`${window.staticRoot}img/skybox1.jpg`, function(texture){ console.log("skybox texture loaded"); skyboxMaterial.map = texture; skyboxMaterial.needsUpdate = true;})
+
+if (SETTINGS.use_textures){
+    const feltTexture = textureLoader.load(`${window.staticRoot}img/felt texture.jpg`, function(texture){  baiseMaterial.map = texture; baiseMaterial.needsUpdate = true;})
+    const woodTexture = textureLoader.load(`${window.staticRoot}img/wood texture.jpg`, function(texture){ woodMaterial.map = texture; woodMaterial.needsUpdate = true;})
+}
+const skyboxTexture = SETTINGS.use_textures ? textureLoader.load(`${window.staticRoot}img/skybox1.jpg`, function(texture){ console.log("skybox texture loaded"); skyboxMaterial.map = texture; skyboxMaterial.needsUpdate = true;}) : 'undefined'
 
 /*
 const dieMaterialx1 = [
