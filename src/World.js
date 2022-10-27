@@ -22,7 +22,7 @@ var defaultContactMaterial = new CANNON.ContactMaterial(
   ASSETS.defaultPhysicsMaterial, // Material #1
   ASSETS.defaultPhysicsMaterial, // Material #2
   {
-    friction: 0.1, // friction coefficient
+    friction: 0.0, // friction coefficient
     restitution: 1.0 // restitution
   }
 );

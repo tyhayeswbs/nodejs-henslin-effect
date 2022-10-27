@@ -1,13 +1,15 @@
 const THREE = require("three");
+const ASSETS = require("./AssetLibrary.js")
 //const TWEENJS = require("tween.js")
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+const SETTINGS = require("./Settings.js")
 
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 
 // Set some camera attributes.
-const VIEW_ANGLE = 45;
+const VIEW_ANGLE = 60//45;
 const ASPECT = WIDTH / HEIGHT;
 const NEAR = 0.1;
 const FAR = 10000;
@@ -18,6 +20,10 @@ const container = document.querySelector("#app");
 // Create a WebGL renderer, camera
 // and a scene
 const renderer = new THREE.WebGLRenderer();
+if (SETTINGS.render_shadows){
+    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio(window.devicePixelRatio);
+}
 const camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
 window.camera = camera;
@@ -58,6 +64,7 @@ const proto_scene = new THREE.Scene();
 global.scene = proto_scene
 
 // Add the camera to the scene.
+camera.position.set(0,10,0)
 scene.add(camera);
 camera.lookAt(0,0,-40);
 
@@ -76,28 +83,39 @@ renderer.setSize(WIDTH, HEIGHT);
 container.appendChild(renderer.domElement);
 
 // create a point light
-const pointLight = new THREE.PointLight(0xffffff);
+/*
+const pointLight = new THREE.PointLight(0xffffff, 1.5);
 
 // set its position
 pointLight.position.x = 10;
 pointLight.position.y = 40;
-pointLight.position.z = 130;
+pointLight.position.z = 50 // 130;
 
 // add to the scene
 scene.add(pointLight);
+*/
+const ambientLight = new THREE.AmbientLight( 0xffffff, 1)
+scene.add(ambientLight)
 
 // create a point light inside cup
 
 // create a point light
-const pointLight2 = new THREE.PointLight(0xffffff);
+const pointLight2 = new THREE.PointLight(0xffffff,1.5);
 
 // set its position
 pointLight2.position.x = 0;
-pointLight2.position.y = 20;
-pointLight2.position.z = -300;
+pointLight2.position.y = 30;
+pointLight2.position.z = -60;
+pointLight2.castShadow = true;
 
 // add to the scene
 scene.add(pointLight2);
+
+const skyboxMesh = new THREE.SphereGeometry(3000, 32, 16)
+const skybox = new THREE.Mesh(skyboxMesh, ASSETS.skyboxMaterial)
+skybox.rotateY(-Math.PI/2)
+scene.add(skybox)
+window.skybox = skybox
 
 module.exports = {scene, renderer, camera, flyCameraTo}
 

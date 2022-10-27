@@ -184,7 +184,7 @@ function serverResponded(){
       Die.run_recorded_simulation()
     }
   catch (err){
-       record_error(err)
+       record_error(err.message)
        alert("An error occurred:" + err + ".  Reloading trial...")
        window.location.reload()
    }
