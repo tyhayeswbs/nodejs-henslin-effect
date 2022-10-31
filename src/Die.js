@@ -247,6 +247,10 @@ class Die extends PhysicsBox {
     }
 
     static run_recorded_simulation(){
+        try {
+            document.querySelector('input[name="animation"]').value = JSON.stringify(window.simulation)
+        }
+        catch {console.log("could not find animation field")}
         console.log("adding event listener")
         window.simulation_offset = Date.now() - window.simulation[0].time
         document.addEventListener('worldUpdate', Die.step_recorded_simulation)
