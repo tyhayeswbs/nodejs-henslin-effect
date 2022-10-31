@@ -16,6 +16,8 @@ class DieSingleton extends PhysicsBox {
         this.home = initial_location
         this.body.linearDamping = 0
         this.body.angularDamping = 0
+        this.body.type = CANNON.Body.DYNAMIC;
+        this.body.wakeUp();
         this.body.updateMassProperties()
         this.body.aabbNeedsUpdate = true;
         this.mesh.castShadow = true;

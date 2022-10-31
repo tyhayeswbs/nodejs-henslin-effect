@@ -10,17 +10,19 @@ const {table} = require("./Table.js");
 
 const UI = require("./UI.js");
 const IH = require("./InputHandler.js");
+const SETTINGS = require("./Settings.js")
 
 
 global.sounds_attached = false;
 
 DiceCup.create()
 
-
-window.addEventListener("dieReady", function(){ die.body.angularVelocity.set( 1 + Math.random(), 1 + Math.random(), 1 + Math.random())
-console.log("die initial angv: ")
-console.log(die.body.angularVelocity)
-})
+if (SETTINGS.initial_rotation){
+    window.addEventListener("dieReady", function(){ die.body.angularVelocity.set( 1 + Math.random(), 1 + Math.random(), 1 + Math.random())
+    console.log("die initial angv: ")
+    console.log(die.body.angularVelocity)
+    })
+}
 
 let initializeDie = function(){
     console.log("Die Initializing")
@@ -30,14 +32,14 @@ let initializeDie = function(){
       2,
       2,
       2,*/
-      { x: 1.5, y: 1.5, z: -30 },
+      { x: 0, y: -2.5, z: -30 },
       scene,
       world,
       updateCallbacks,
       ASSETS.dieMaterial
     );
 //    die.body.mass = 1;
-    window.dispatchEvent(new Event('dieReady'))
+     window.dispatchEvent(new Event('dieReady'))
     
 }
 

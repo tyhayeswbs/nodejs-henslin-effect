@@ -10,7 +10,7 @@ CANNON BOILERPLATE
 
 */
 
-const proto_world = new CANNON.World({gravity: new CANNON.Vec3(0, -9.82, 0)});
+const proto_world = new CANNON.World({gravity: new CANNON.Vec3(0, -9.8, 0)});
 
 global.world = proto_world
 
