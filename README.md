@@ -1,8 +1,8 @@
 usage
 =====
 
-initial setup for WSL open port: netsh interface portproxy add v4tov4 listenport=1234 listenaddress=0.0.0.0 connectport=1234 connectaddress=[WSL's ip address]
-
+initial setup for WSL open port: netsh interface portproxy add v4tov4 listenport=1234 listenaddress=0.0.0.0 connectport=1234 connectaddress=$($(wsl hostname -I).Trim())
+netsh interface portproxy delete v4tov4 listenport=1234 listenaddress=0.0.0.0
 
 to build:  run `npm run-script build`
 
