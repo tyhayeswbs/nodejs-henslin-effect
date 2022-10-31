@@ -32,7 +32,7 @@ let initializeDie = function(){
       2,
       2,
       2,*/
-      { x: 0, y: -2.5, z: -30 },
+      SETTINGS.die_starts_at_bottom ? { x: 0, y: -2.5, z: -30 } : {x: 1.5, y: 1.5, z: -30},
       scene,
       world,
       updateCallbacks,

@@ -240,9 +240,14 @@ function leftFlatFromTable(e){
 }
 
 function gravityOff(){
-    //world.gravity.set(0,0,0);
-    //console.log("gravity is off")
-    gravityRampDown()
+    if (SETTINGS.die_starts_at_bottom){
+        gravityRampDown()
+    }
+    else
+    {
+    world.gravity.set(0,0,0);
+    console.log("gravity is off")
+    }
 }
 
 function gravityReduce(){

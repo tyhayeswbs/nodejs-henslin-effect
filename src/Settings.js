@@ -7,7 +7,7 @@ const use_dv_for_sim = window.use_dv_for_sim ?? true;
 const min_launch_velocity = window.min_launch_velocity ?? -7
 const use_default_launch_params = window.use_default_launch_params ?? true;
 const initial_rotation = window.initial_rotation ?? false;
-const die_starts_at_bottom = window.die_starts_at_bottom ?? true;
+const die_starts_at_bottom = window.die_starts_at_bottom ?? false;
 
 const use_textures = window.use_textures ?? false;
 const render_shadows = window.render_shadows ?? false;
