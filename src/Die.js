@@ -1,10 +1,13 @@
 //import "./PhysicsBox.js"
+//const fs = require('fs')
 const {PhysicsBox} = require( "./PhysicsBox.js")
+const THREE = require("three")
 const THREE = require("three")
 const SCENE = require("./Scene.js")
 const CANNON = require("cannon-es")
 const ASSETS = require("./AssetLibrary.js")
 const SETTINGS = require("./Settings.js")
+const {animations} = require("./Animations.js")
 
 
 class DieSingleton extends PhysicsBox {
@@ -74,6 +77,63 @@ class Die extends PhysicsBox {
                alert("An error occured: The die escape from the dice cup premaulturely. Reloading trial...")
                window.location.reload()
             }
+    }
+
+
+    static load_prerecorded_sim(prerecorded_sim, result){
+        
+        //fetch(`${window.staticRoot}img/{prerecorded_sim}.json`).then((response) => window.simulation = response.json())
+
+        window.simulation = animations[prerecorded_sim]
+
+        for ( let i = 0; i < window.simulation.length; i++){
+            let current_params = window.simulation[i]
+
+            if (!(current_params.rot instanceof THREE.Quaternion)){
+                let current_rot = new THREE.Quaternion(current_params.rot._x, current_params.rot._y, current_params.rot._z, current_params.rot._w)
+                current_params.rot = current_rot
+            }
+
+            if (!(current_params.pos instanceof CANNON.Vec3)){
+                let current_pos = new CANNON.Vec3()
+                current_pos.set(current_params.pos.x, current_params.pos.y, current_params.pos.z)
+                current_params.pos = current_pos
+            }
+
+            window.simulation[i] = current_params
+
+        }
+
+        let last_frame_of_sim = window.simulation[window.simulation.length -1]
+
+        let q = last_frame_of_sim.rot
+        let resting_quaternion = new CANNON.Quaternion(q._x, q._y, q._z, q._w)
+
+
+        let clone_die = new CANNON.Body({
+            mass: die.body.mass,
+            position: new CANNON.Vec3(die.home.x, die.home.y, die.home.z),
+            shape:  new CANNON.Box(die.body.shapes[0].halfExtents),
+            material: die.body.material,
+            canSleep: false,
+            friction: die.body.friction,
+            restitution: die.body.restitution,
+            velocity: new CANNON.Vec3(0,0,0),
+            angularVelocity: new CANNON.Vec3(0,0,0),
+            quaternion: resting_quaternion,
+            type: CANNON.Body.STATIC,
+        })
+       
+        die.body.type = CANNON.Body.STATIC
+        world.addBody(clone_die)
+        let up_face = Die.get_up_face(clone_die)
+        world.removeBody(clone_die)
+
+        q = window.simulation[0].rot
+        let starting_quaternion = new CANNON.Quaternion(q._x, q._y, q._z, q._w)
+
+        die.quaternion = starting_quaternion
+        Die.set_up_face(up_face, result)
     }
 
     static simulate_forward(result){
@@ -194,13 +254,24 @@ class Die extends PhysicsBox {
             let lerp_amount = invLerp(current_params.time, worldtime, next_params.time)
             //console.log(`lerp aroumt: ${lerp_amount}`)
 
+
+
             let new_rot = new THREE.Quaternion()
             new_rot.copy(current_params.rot)
             new_rot.slerp(simulation[0].rot, lerp_amount)
             die.body.quaternion.copy(new_rot)
 
+            console.log(current_params)
+//document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+
             let new_pos = new CANNON.Vec3()
+try {
             current_params.pos.lerp(simulation[0].pos, lerp_amount, new_pos)
+}
+catch( TypeError){
+                console.log(current_params)
+document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
+}
             die.body.position.copy(new_pos)
         }
         else if (window.simulation.length == 1)
@@ -208,8 +279,10 @@ class Die extends PhysicsBox {
             current_params = simulation.shift()
             die.body.quaternion.copy(current_params.rot)
             die.body.position.copy(current_params.pos)
+
             document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
             const start_time = Date.now()
+            
             const closure = function(){ 
                 SCENE.flyCameraTo(SCENE.camera.position.clone(), current_params.pos.clone(), start_time, 3000)
                 }

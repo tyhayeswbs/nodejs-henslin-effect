@@ -176,8 +176,18 @@ function serverResponded(){
   console.log("server_responded")
   try {
       gravityOn();
-      Die.simulate_forward(window.result)
-      window.alert("Click here to see the results of your roll")
+      //if (SETTINGS.use_prerecorded_sim){
+          console.log("using prerecorded_animation")
+          Die.load_prerecorded_sim(0, window.result)
+     // }
+     // else
+     // {
+     //     Die.simulate_forward(window.result)
+     // }
+
+      if (SETTINGS.alert_before_show_sim){
+          window.alert("Click here to see the results of your roll")
+      }
       die.body.type = CANNON.Body.STATIC;
       STATE = "SIMULATION REPLAYING"
       DiceCup.destroy();
