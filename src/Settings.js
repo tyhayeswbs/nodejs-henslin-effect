@@ -25,5 +25,6 @@ module.exports = {simulation_scale,
                 die_starts_at_bottom,
                 use_textures,
                 render_shadows,
-                min_shake_mag
+                min_shake_mag,
+                use_prerecorded_sim
                 }

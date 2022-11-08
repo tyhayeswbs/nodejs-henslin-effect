@@ -80,9 +80,16 @@ class Die extends PhysicsBox {
     }
 
 
-    static load_prerecorded_sim(prerecorded_sim, result){
+    static load_prerecorded_sim(dv, result){
         
         //fetch(`${window.staticRoot}img/{prerecorded_sim}.json`).then((response) => window.simulation = response.json())
+
+
+        let dv_as_proportion = Math.min(dv/35, 1)
+        let closest_anim_key = Math.round(dv_as_proportion * (animations.length -1))
+        let prerecorded_sim = Math.min(closest_anim_key, animations.length -1)
+
+        console.log(`playing sim ${prerecorded_sim}`)
 
         window.simulation = animations[prerecorded_sim]
 

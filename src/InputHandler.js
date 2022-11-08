@@ -198,8 +198,9 @@ function serverResponded(){
   try {
       gravityOn();
       if (SETTINGS.use_prerecorded_sim){
+          let dv = Number(document.querySelector('[name="dv"]').value)
           console.log("using prerecorded_animation")
-          Die.load_prerecorded_sim(0, window.result)
+          Die.load_prerecorded_sim(dv, window.result)
       }
       else
       {
