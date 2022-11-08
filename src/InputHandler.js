@@ -207,7 +207,7 @@ function serverResponded(){
           Die.simulate_forward(window.result)
       }
 
-      if (SETTINGS.alert_before_show_sim){
+      if (SETTINGS.button_before_play_sim){
           window.alert("Click here to see the results of your roll")
       }
       die.body.type = CANNON.Body.STATIC;

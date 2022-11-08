@@ -26,5 +26,6 @@ module.exports = {simulation_scale,
                 use_textures,
                 render_shadows,
                 min_shake_mag,
-                use_prerecorded_sim
+                use_prerecorded_sim,
+                button_before_play_sim
                 }
