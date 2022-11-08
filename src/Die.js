@@ -261,7 +261,6 @@ class Die extends PhysicsBox {
             new_rot.slerp(simulation[0].rot, lerp_amount)
             die.body.quaternion.copy(new_rot)
 
-            console.log(current_params)
 //document.removeEventListener('worldUpdate', Die.step_recorded_simulation)
 
             let new_pos = new CANNON.Vec3()

@@ -162,9 +162,30 @@ function stopShaking() {
   window.removeEventListener("deviceorientation", enterFlatFromTable)
   document.addEventListener('simulationReplayFinished', trialEnd);
 
-  die.body.velocity = new CANNON.Vec3(0, 0, -die.body.velocity.length());
+
+
+  let absolute_mags = window.readings.map((x) => Number(x.w))
+  let dv = absolute_mags.reduce((running_total, next_item) => running_total + next_item, 0)
+    console.log(`after reduce:`)
+    console.log(dv)
+
+   dv = dv/window.readings.length
+
+  document.querySelector('[name="dv"]').value = dv
+
+  die.body.velocity = new CANNON.Vec3(0, 0, -dv*SETTINGS.dv_scale);
+  
+  console.log(`dv: ${dv}`)
+  if (dv < SETTINGS.min_shake_mag){
+       record_error(`min shake magnitude not met.  got ${dv}`)
+       alert("An error occurred:" + "No shake detected" + ".  Reloading trial...")
+       window.location.reload()
+       return
+    }
 
   send_data(window.readings)
+
+  
 
   document.addEventListener("serverTrialCoda", serverResponded)
   STATE = "AWAITING RESPONSE FROM SERVER"
@@ -176,14 +197,14 @@ function serverResponded(){
   console.log("server_responded")
   try {
       gravityOn();
-      //if (SETTINGS.use_prerecorded_sim){
+      if (SETTINGS.use_prerecorded_sim){
           console.log("using prerecorded_animation")
           Die.load_prerecorded_sim(0, window.result)
-     // }
-     // else
-     // {
-     //     Die.simulate_forward(window.result)
-     // }
+      }
+      else
+      {
+          Die.simulate_forward(window.result)
+      }
 
       if (SETTINGS.alert_before_show_sim){
           window.alert("Click here to see the results of your roll")
@@ -261,13 +282,11 @@ function gravityOff(){
 }
 
 function gravityReduce(){
-        console.log(`reducing gravity: ${world.gravity.y}`)
         if (world.gravity.y < -0.1){
             world.gravity.set(0, world.gravity.y + 0.1,0) 
         }
         else
         {
-            console.log("finished reducing gravity")
             world.gravity.set(0, 0, 0)
             document.removeEventListener('worldUpdate', gravityReduce)
         }
