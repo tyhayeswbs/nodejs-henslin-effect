@@ -142,14 +142,15 @@ function startShaking() {
     sounds_attached = true;
   }
   gravityOff();
-  window.setTimeout(shortBleep, 1000)
-  window.setTimeout(shortBleep, 3000)
-  window.setTimeout(longBleep, 5000)
+  //window.setTimeout(shortBleep, 1000)
+  //window.setTimeout(shortBleep, 3000)
+  //window.setTimeout(longBleep, 5000)
   window.setTimeout(stopShaking, 5000)
 }
 
 function shortBleep(){
-    ASSETS.shortBleep.play()
+    //ASSETS.shortBleep.play()
+    shortBleep.play()
 }
 
 function longBleep(){

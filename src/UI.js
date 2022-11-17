@@ -12,18 +12,18 @@ function domReadyFunctions(){
         for (let func of assetsLoadedCallbacks){
             func()
         }   
-        for (let sound of ASSETS.sounds){
+       /* for (let sound of ASSETS.sounds){
             sound.context.resume()
-            //console.log("resumed audio context for sounds")
+            console.log("resumed audio context for sounds")
         }
         try {
         ASSETS.shortBleep.context.resume()
         ASSETS.longBleep.context.resume()
-        //console.log("resumed audio context")
+        console.log("resumed audio context")
         }
         catch (e){
            alert(e)
-        }
+        }*/
     });
 
     for (let func of domReadyCallbacks){

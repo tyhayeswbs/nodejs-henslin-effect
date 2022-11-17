@@ -1,10 +1,17 @@
 const CANNON = require("cannon-es");
 const THREE = require("three");
 const SETTINGS = require("./Settings.js")
+import {TwoStepAudioLoader} from "./TwoStepAudioLoader.js"
 
 const loadingManager = new THREE.LoadingManager()
 const textureLoader = new THREE.TextureLoader(loadingManager);
-const audioLoader = new THREE.AudioLoader(loadingManager);
+const audioLoader = new TwoStepAudioLoader(loadingManager);
+
+var sounds = []
+var shortBleep;
+var longBleep;
+
+
 
 if (!window.staticRoot)
 {
@@ -23,11 +30,52 @@ loadingManager.onLoad = () => {
     document.querySelector("#spinner").classList.add('hide');
     document.querySelector("#loaded").classList.remove('hide');
     document.querySelector("#loaded").classList.add('show');
+    
+    document.querySelector('#startButton').addEventListener('click', function(){
+        const listener = new THREE.AudioListener();
+
+        audioLoader.decodeAll(listener)
+
+    });
+
 }
 
 loadingManager.onError = (url) => {
     console.log(`an error occured loading ${url}`)
 }
+
+audioLoader.load(`${window.staticRoot}sounds/short_bleep.mp3`, function (buffer, listener) {
+        shortBleep = new THREE.Audio(listener);
+        shortBleep.setBuffer(buffer);
+        shortBleep.setLoop(false);
+        shortBleep.setVolume(1.0);
+        console.log("short bleep setup done")
+        setTimeout(() => shortBleep.play(), 1000)
+        setTimeout(() => shortBleep.play(), 3000)
+  });
+
+audioLoader.load(`${window.staticRoot}sounds/long_bleep.mp3`, function (buffer, listener) {
+        longBleep = new THREE.Audio(listener);
+        longBleep.setBuffer(buffer);
+        longBleep.setLoop(false);
+        longBleep.setVolume(1.0);
+        console.log("long bleep setup done")
+        setTimeout(()=> longBleep.play(), 5000)
+  });
+
+
+for (var i = 1; i <= 6; i++) {
+  audioLoader.load(`${window.staticRoot}sounds/dice sound ${i}.mp3`, function (buffer, listener) {
+        let sound = new THREE.Audio(listener);
+        sound.setBuffer(buffer);
+        sound.setLoop(false);
+        sound.setVolume(1.0);
+        sounds.push(sound);
+        console.log(`rattle ${i} setup done`)
+  });
+}
+
+
 
 
 const dieFaceMaterials = [undefined];
@@ -174,6 +222,7 @@ const lidMaterials = getLidMaterials()
 
 
 var sounds = []
+/*
 const listener = new THREE.AudioListener();
 
 for (var i = 1; i <= 6; i++) {
@@ -198,7 +247,7 @@ var longBleep = new THREE.Audio(listener);
         longBleep.setLoop(false);
         longBleep.setVolume(1.0);
   });
-
+*/
 const defaultPhysicsMaterial = new CANNON.Material("defaultMaterial")
 
 const baisePhysicsMaterial = new CANNON.Material("baiseMaterial")
