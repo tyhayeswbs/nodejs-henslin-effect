@@ -158,6 +158,7 @@ function longBleep(){
 }
 
 function stopShaking() {
+  document.dispatchEvent(new Event('timeUp'))
   window.removeEventListener("devicemotion", readAccel);
   document.removeEventListener('worldUpdate', Die.checkForEscape)
   window.removeEventListener("deviceorientation", enterFlatFromTable)
@@ -207,14 +208,23 @@ function serverResponded(){
       {
           Die.simulate_forward(window.result)
       }
-
       if (SETTINGS.button_before_play_sim){
-          window.alert("Click here to see the results of your roll")
+          //window.alert("Click here to see the results of your roll")
+          
+          jQuery('#play-results-button').on('click', function(){
+            jQuery('#play-results-button').off('click'); 
+            jQuery('#play-results-toast').addClass('hide'); 
+            
+            showResults();
+            })
+
+          jQuery('#play-results-toast').removeClass('hide')
       }
-      die.body.type = CANNON.Body.STATIC;
-      STATE = "SIMULATION REPLAYING"
-      DiceCup.destroy();
-      Die.run_recorded_simulation()
+      else
+      {
+          showResults()
+      }
+      
     }
   catch (err){
        record_error(err)
@@ -222,6 +232,21 @@ function serverResponded(){
        window.location.reload()
    }
   
+}
+
+function showResults(){
+    console.log("running show_results")
+    try {
+      die.body.type = CANNON.Body.STATIC; // in theory shouldn't this need the aabb update?  But it's working and I don't want to break it
+      STATE = "SIMULATION REPLAYING"
+      DiceCup.destroy();
+      Die.run_recorded_simulation()
+    }
+      catch (err){
+       record_error(err)
+       alert("An error occurred:" + err + ".  Reloading trial...")
+       window.location.reload()
+   }
 }
 
 function trialEnd() {

@@ -60,7 +60,8 @@ audioLoader.load(`${window.staticRoot}sounds/long_bleep.mp3`, function (buffer, 
         longBleep.setLoop(false);
         longBleep.setVolume(1.0);
         console.log("long bleep setup done")
-        setTimeout(()=> longBleep.play(), 4900)
+        document.addEventListener('timeUp', function (){ longBleep.play()})
+        //setTimeout(()=> longBleep.play(), 4900)
   });
 
 
