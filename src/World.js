@@ -65,7 +65,7 @@ let worldtime = Date.now();
 global.updateCallbacks = [];
 
 function worldStep(delta) {
-  world.step(delta / 1000, 20);
+  world.step(delta / 1000, 10);
 }
 
 updateCallbacks.push(worldStep);

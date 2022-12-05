@@ -24,14 +24,39 @@ class DieSingleton extends PhysicsBox {
         this.body.updateMassProperties()
         this.body.aabbNeedsUpdate = true;
         this.mesh.castShadow = true;
+
+/*
+        this.body.preStep = () => {
+            alert("pre step running")
+            if (new CANNON.Vec3(this.home.x, this.home.y, this.home.z).distanceTo(this.body.position) > 8){
+                    alert("resetting location")
+                this.resetLocation()}
+            }
+*/
     }
 
-    resetLocation(){
-        die.body.type = CANNON.Body.STATIC;
+    resetLocation = () => {
         //die.body.position = new CANNON.Vec3({x: this.home.x, y: this.home.y, z: this.home.z})
-        die.body.position.set(this.home.x, this.home.y, this.home.z);
+        this.body.position.set(this.home.x, this.home.y, this.home.z);
+        this.body.previousPosition.set(this.home.x, this.home.y, this.home.z);
+        this.body.interpolatedPosition.set(this.home.x, this.home.y, this.home.z);
+
+        this.body.velocity.setZero()
+        this.body.initVelocity.setZero()
+        this.body.angularVelocity.setZero()
+        this.body.initAngularVelocity.setZero()
+
+        this.body.force.setZero()
+        this.body.torque.setZero()
+
+
+        this.body.sleepState = 0;
+        this.body.timeLastSleepy = 0;
+        this.body._wakeUpAfterNarrowphase = false;
+
         die.mesh.position.set(this.home.x, this.home.y, this.home.z);
-        die.body.type = CANNON.Body.DYNAMIC;
+        alert("resetLocation ran")
+
     }
 
 }
@@ -60,8 +85,18 @@ class Die extends PhysicsBox {
         die.body.type = CANNON.Body.DYNAMIC;
     }
 
+    static resetLocation(){
+        alert("Die.resetLocation running")
+        try{
+            Die.instance.resetLocation()
+        } catch (e){
+            alert(e)
+        }
+    }
+
     static checkForEscape(){
         //console.log("check for escape running")
+    try{
         die = Die.getInstance()
         if (STATE != "TRIAL IN PROGRESS"){
             document.removeEventListener('worldUpdate', Die.checkForEscape)
@@ -72,11 +107,15 @@ class Die extends PhysicsBox {
         //console.log(die.home)
         //console.log(new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position))
         if (new CANNON.Vec3(die.home.x, die.home.y, die.home.z).distanceTo(die.body.position) > 8){
-               // throw "die escaped from dice cup prematurely"
+              //  throw "die escaped from dice cup prematurely"
                document.removeEventListener('worldUpdate', Die.checkForEscape)
-               alert("An error occured: The die escape from the dice cup premaulturely. Reloading trial...")
-               window.location.reload()
+               //alert("An error occured: The die escape from the dice cup premaulturely. Reloading trial...")
+                Die.resetLocation()
+               //window.location.reload()
             }
+        } catch (e){
+            alert(e)
+        }
     }
 
 

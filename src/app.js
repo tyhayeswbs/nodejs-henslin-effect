@@ -39,8 +39,8 @@ let initializeDie = function(){
       ASSETS.dieMaterial
     );
 //    die.body.mass = 1;
-     window.dispatchEvent(new Event('dieReady'))
-    
+      window.dispatchEvent(new Event('dieReady'))
+      updateCallbacks.push(Die.checkForEscape)
 }
 
 assetsLoadedCallbacks.push(initializeDie)
