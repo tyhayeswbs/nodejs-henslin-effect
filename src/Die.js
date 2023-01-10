@@ -55,7 +55,6 @@ class DieSingleton extends PhysicsBox {
         this.body._wakeUpAfterNarrowphase = false;
 
         die.mesh.position.set(this.home.x, this.home.y, this.home.z);
-        alert("resetLocation ran")
 
     }
 
@@ -86,7 +85,6 @@ class Die extends PhysicsBox {
     }
 
     static resetLocation(){
-        alert("Die.resetLocation running")
         try{
             Die.instance.resetLocation()
         } catch (e){
