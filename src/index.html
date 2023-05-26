@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Parcel Sandbox</title>
+	<meta charset="UTF-8" />
+    <style type="text/css">
+    body { font-family: Tahoma, Arial, Verdana, Sans-Serif; 
+            box-sizing: border-box;
+            }
+    #app, #loading {position: absolute;
+          top: 0;
+          left: 0;
+          }
+
+    #loaded {text-align: center;}
+
+    #loaded button {
+            /*adapted from bootstrap v4*/
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            color: #f8f9fa;
+            background-color: transparent;
+            background-image: none;
+            border-color: #f8f9fa;
+            }
+
+    #loaded button:hover {
+            color: #212529;
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+            text-decoration: none;
+    }
+
+    .overlay {background: #000; 
+              display: flex; 
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              width: 100vw;
+              height: 100vh;
+              color: #CCC;
+              }
+
+    .show {
+          opacity: 1;
+          transition: opacity 400ms;
+            }
+
+    .hide {
+          opacity: 0;
+          transition: opacity 400ms;
+        }
+
+
+    /*
+    loading spinners from https://loading.io/css/
+    licensed under CC0
+    */
+    .lds-dual-ring {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+    }
+    .lds-dual-ring:after {
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid #fff;
+      border-color: #fff transparent #fff transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+
+    </style>
+</head>
+
+<body>
+	<div id="app"></div>
+    <div id="loading" class="show overlay">
+        <div class="lds-dual-ring show" id="spinner"></div>
+        <div class="hide" id="loaded">
+            <h2>Loading Complete</h2>
+            <button type="button" id="startButton">Begin</button>
+        </div>
+    </div>
+    <div id="play-results-toast" class="toast" role="alert" data-autohide="false">
+    
+        <div class="toast-body">Click here to see the results of your roll</div>
+    
+        <button class="btn btn-primary" id="play-results-button">Continue</button>
+    </div>
+    <div id="trial-end-toast" class="toast" role="alert" data-autohide="false">
+    
+        <div class="toast-body hide" id="lose-toast">Sorry, you lost.  Better luck next time</div>
+        <div class="toast-body hide" id="win-toast">Congratualtions, you won!  Good luck for next time</div>
+    
+        {{next_button}}
+    </div>
+	<script src="app.js" type="module">
+        
+	</script>
+</body>
+
+</html>
